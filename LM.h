@@ -1,6 +1,9 @@
 #ifndef LM_H
 #define LM_H
 
+#include "Element.h"
+#include "Book.h"
+#include "Reader.h"
 #include "Transaction.h"
 #include <fstream>
 using namespace std;

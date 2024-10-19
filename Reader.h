@@ -1,6 +1,7 @@
 #ifndef Reader_H
 #define Reader_H
 
+#include "Element.h"
 #include "Book.h"
 
 using namespace std;

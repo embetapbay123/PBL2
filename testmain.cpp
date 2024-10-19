@@ -1,12 +1,17 @@
 #include <iostream>
-#include <limits> 
+#include "Element.h"
+#include "Book.h"
+#include "Reader.h"
+#include "Transaction.h"
+#include "limits"
 #include "LM.h" 
-void printNoti(){
-	cin.ignore();
-	cout << "Press any key to continue..";
-	getchar();
-}
 using namespace std;
+
+void printNoti() {
+    cout << "Press Enter to continue... ";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // XÃ³a bá» bá»™ Ä‘á»‡m cÅ©
+    cin.get(); // Äá»£i ngÆ°á»i dÃ¹ng nháº¥n Enter
+}
 
 int main() {
     Library library;
@@ -118,7 +123,7 @@ int main() {
                 int year, pages, totalCopies;
 
                 cout << "Nhap tieu de sach: ";
-                cin.ignore(); // B? qua kı t? newline còn sót l?i
+                cin.ignore(); // B? qua kï¿½ t? newline cï¿½n sï¿½t l?i
                 getline(cin, title);
                 
                 cout << "Nhap tac gia: ";
@@ -138,7 +143,7 @@ int main() {
 
                 Book* newBook = library.createNewBook(title, author, category, year, pages, totalCopies);
 
-                // Ch?n v? trí d? thêm sách
+                // Ch?n v? trï¿½ d? thï¿½m sï¿½ch
                 int addChoice;
                 cout << "1. Them vao dau danh sach\n";
                 cout << "2. Them vao cuoi danh sach\n";
@@ -198,7 +203,7 @@ int main() {
                 cout << "Nhap lua chon cua ban: ";
                 cin >> addChoice;
 
-                // Ki?m tra n?u ngu?i dùng nh?p không ph?i s?
+                // Ki?m tra n?u ngu?i dï¿½ng nh?p khï¿½ng ph?i s?
                 while (cin.fail()) {
                     cin.clear();
                     cin.ignore(numeric_limits<streamsize>::max(), '\n');
