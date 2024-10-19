@@ -70,8 +70,8 @@ public:
 // Implementation of Reader class
 Reader::Reader() : borrowedCount(0), next(nullptr) {}
 
-Reader::Reader(string readerID, string name, string gender, string className, string address, string phoneNumber)
-    : Element(readerID, name), gender(gender), className(className), address(address), phoneNumber(phoneNumber), borrowedCount(0), next(nullptr) {}
+Reader::Reader(string readerID, string Name, string Gender, string ClassName, string Address, string PhoneNumber)
+    : Element(readerID, Name), gender(Gender), className(ClassName), address(Address), phoneNumber(PhoneNumber), borrowedCount(0), next(nullptr) {}
 
 void Reader::borrowBook(string bookID) { 
     if (borrowedCount < MAX_BORROWED_BOOKS) {

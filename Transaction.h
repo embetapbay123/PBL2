@@ -33,8 +33,8 @@ public:
 // Implementation of Transaction class
 Transaction::Transaction() : borrowDate(0), returnDate(0), status("Unreturned"), next(nullptr) {}
 
-Transaction::Transaction(string readerID, string bookID, time_t borrowDate)
-    : readerID(readerID), bookID(bookID), borrowDate(borrowDate), returnDate(0), status("Unreturned"), next(nullptr) {}
+Transaction::Transaction(string ReaderID, string BookID, time_t BorrowDate)
+    : readerID(ReaderID), bookID(BookID), borrowDate(BorrowDate), returnDate(0), status("Unreturned"), next(nullptr) {}
 
 string Transaction::getReaderID() const { return readerID; }
 
@@ -42,9 +42,9 @@ string Transaction::getBookID() const { return bookID; }
 
 string Transaction::getStatus() const { return status; }
 
-void Transaction::setReturnDate(time_t returnDate) { this->returnDate = returnDate; }
+void Transaction::setReturnDate(time_t ReturnDate) { this->returnDate = ReturnDate; }
 
-void Transaction::setStatus(const string& status) { this->status = status; }
+void Transaction::setStatus(const string& Status) { this->status = Status; }
 
 void Transaction::printTransaction() const {
     cout << "Reader ID: " << readerID << ", Book ID: " << bookID
@@ -55,7 +55,7 @@ void Transaction::printTransaction() const {
 bool Transaction::isOverdue() const {
     time_t now = time(0);
     double secondsDiff = difftime(now, borrowDate);
-    int daysDiff = secondsDiff / (60 * 60 * 24);
+    int daysDiff = (int)secondsDiff / (60 * 60 * 24);
     return (daysDiff > 30 && status == "Unreturned");
 }
 

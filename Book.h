@@ -72,8 +72,8 @@ public:
 // Implementation of Book class
 Book::Book() : year(0), pages(0), totalCopies(0), availableCopies(0), next(nullptr) {}
 
-Book::Book(string id, string title, string author, string category, int year, int pages, int totalCopies)
-    : Element(id, title), author(author), category(category), year(year), pages(pages), totalCopies(totalCopies), availableCopies(totalCopies), next(nullptr) {}
+Book::Book(string ID, string title, string Author, string Category, int Year, int Pages, int TotalCopies)
+    : Element(ID, title), author(Author), category(Category), year(Year), pages(Pages), totalCopies(TotalCopies), availableCopies(TotalCopies), next(nullptr) {}
 
 void Book::borrowBook() {
     if (availableCopies > 0) {

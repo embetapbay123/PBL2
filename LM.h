@@ -470,7 +470,7 @@ void Library::searchBookByTitle(const string& title) const {
     bool found = false;
     while (current != nullptr) {
         if (isSubstring(current->getName(), title)) {
-        	if (!found) Book::printTable;
+        	if (!found) Book::printTable();
             current->printInfo();
             found = true;
         }

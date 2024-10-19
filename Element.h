@@ -14,7 +14,8 @@ protected :
 	string name;
 public :
 	Element() {}
-    Element(const string& id, const string& name) : id(id), name(name) {}
+	virtual ~Element() {}
+    Element(const string& ID, const string& Name) : id(ID), name(Name) {}
 	string getId() const {return id;}
     string getName() const {return name;}
     void setId(const string& newId) {
@@ -27,5 +28,5 @@ public :
     virtual void printInfo() const = 0;  
     virtual Element* getNext() const = 0;
 };
-#endif
 
+#endif
