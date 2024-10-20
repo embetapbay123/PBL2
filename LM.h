@@ -15,22 +15,17 @@ private:
     Book* bookHead; 
     Reader* readerHead;
     Transaction* transactionHead; 
-    int currentBookID; 
-    int currentReaderID; 
-
 public:
     Library();
     ~Library(); 
-    string newIDBook();
-    string newIDReader();
     void loadBooks();
     void loadReaders();
     Book* createNewBook(string title, string author, string category, int year, int pages, int totalCopies) {
-	    Book* newBook = new Book(this->newIDBook(), title, author, category, year, pages, totalCopies);
+	    Book* newBook = new Book(title, author, category, year, pages, totalCopies);
 	    return newBook;
 	}
 	Reader* createNewReader(string name, string gender, string className, string address, string phoneNumber) {
-	    Reader* newReader = new Reader(this->newIDReader(), name, gender, className, address, phoneNumber);
+	    Reader* newReader = new Reader(name, gender, className, address, phoneNumber);
 	    return newReader;
 	}
     void addBookAtHead(Book* newBook);
@@ -56,7 +51,7 @@ public:
 };
 
 // Implementation of Library class
-Library::Library() : bookHead(nullptr), readerHead(nullptr), transactionHead(nullptr), currentBookID(1) ,currentReaderID(1) {}
+Library::Library() : bookHead(nullptr), readerHead(nullptr), transactionHead(nullptr) {}
 
 Library::~Library() {
     Book* currentBook = bookHead;
@@ -88,20 +83,7 @@ string extractField(string &line) {
     line = (pos != string::npos) ? line.substr(pos + 1) : "";
     return field;
 }
-string toString(int number) {
-	string result = "";
-	while (number > 0) {
-		result = static_cast<char>((number % 10) + '0') + result;
-		number /= 10;
-	}
-	while (result.length() < 3) {
-        result = '0' + result;
-    }
-    return result;
-}
-string Library::newIDBook() {
-	return ("S" + toString(currentBookID++));
-}
+
 void Library::loadBooks() {
     ifstream file("books.txt");
     if (!file.is_open()) {
@@ -151,7 +133,7 @@ void Library::loadBooks() {
             continue;
         }
 
-        Book* newBook = new Book(this->newIDBook(), title, author, category, year, pages, totalCopies);
+        Book* newBook = new Book(title, author, category, year, pages, totalCopies);
 
         // Them vao danh sach lien ket
         newBook->setNext(bookHead);
@@ -160,11 +142,6 @@ void Library::loadBooks() {
 
     file.close();
 }
-
-string Library::newIDReader() {
-	return ("R" + toString(currentReaderID++));
-}
-
 void Library::loadReaders() {
     ifstream file("readers.txt");
     if (!file.is_open()) {
@@ -206,7 +183,7 @@ void Library::loadReaders() {
         }
 
         // Tao doi tuong Reader moi
-        Reader* newReader = new Reader(this->newIDReader(), name, gender, className, address, phoneNumber);
+        Reader* newReader = new Reader(name, gender, className, address, phoneNumber);
 
         // Them vao danh sach lien ket
         newReader->setNext(readerHead);
@@ -303,6 +280,10 @@ void Library::deleteBook(const string& bookID) {
     }
 
     if (bookHead->getId() == bookID) {
+        if (bookHead->getAvailableCopies() != bookHead->getTotalCopies()) {
+            cout << "Sach hien chua duoc tra het, khong the xoa" << endl;
+            return;
+        }
         Book* temp = bookHead;
         bookHead = bookHead->getNext(); 
         delete temp; 
@@ -321,6 +302,10 @@ void Library::deleteBook(const string& bookID) {
         return;
     }
 
+    if (current->getNext()->getAvailableCopies() != current->getNext()->getTotalCopies()) {
+        cout << "Sach hien chua duoc tra het, khong the xoa." << endl;
+        return;
+    }
     Book* temp = current->getNext();
     current->setNext(current->getNext()->getNext()); 
     delete temp; 
@@ -334,6 +319,10 @@ void Library::deleteReader(const string& readerID) {
     }
 
     if (readerHead->getId() == readerID) {
+        if (readerHead->getBorrowedBooksCount() != 0) {
+            cout << "Nguoi doc chua tra het sach, khong the xoa." << endl;
+            return;
+        }
         Reader* temp = readerHead;
         readerHead = readerHead->getNext(); 
         delete temp; 
@@ -351,7 +340,10 @@ void Library::deleteReader(const string& readerID) {
         cout << "Khong ton tai sach co id " << readerID << endl;
         return;
     }
-
+    if (current->getNext()->getBorrowedBooksCount() != 0) {
+        cout << "Nguoi doc chua tra het sach, khong the xoa." << endl;
+        return;
+    }
     Reader* temp = current->getNext();
     current->setNext(current->getNext()->getNext()); 
     delete temp; 
@@ -401,35 +393,54 @@ Reader* Library::findReaderbyID(const string& readerID) {
 void Library::borrowBook(const string& readerID, const string& bookID) {
     Reader* reader = findReaderbyID(readerID);
     Book* book = findBookbyID(bookID);
-
-    if (reader != nullptr && book != nullptr) {
-        if (book->getAvailableCopies() > 0 && reader->getBorrowedBooksCount() < MAX_BORROWED_BOOKS) {
+    if (reader == nullptr) {
+        cout << "Doc gia khong ton tai." << endl;
+        return;
+    }
+    if (book == nullptr) {
+        cout << "Sach khong ton tai." << endl;
+        return;
+    }
+    if (book->getAvailableCopies() == 0) {
+        cout << "Khong con sach co the muon." << endl;
+        return;
+    }
+    if (reader->getBorrowedBooksCount() == MAX_BORROWED_BOOKS) {
+        cout << "So sach muon cua doc gia dat toi da." << endl;
+        return;
+    }
+    if (reader->findBookInListBorrowedBooks(bookID) == false) {
             book->borrowBook();
             reader->borrowBook(bookID);
             time_t now = time(0);
-            Transaction* newTransaction = new Transaction(readerID, bookID, now);
+            Transaction* newTransaction = new Transaction(readerID, bookID, Date(now));
             newTransaction->setNext(transactionHead);
             transactionHead = newTransaction;
             cout << "Muon sach thanh cong!" << endl;
-        } else {
-            cout << "Muon sach that bai. Kiem tra so luong sach hoac so sach doc gia da muon." << endl;
-        }
-    } else {
-        cout << "Doc gia hoac sach khong ton tai." << endl;
-    }
+        } 
+    else {
+        cout << "Khong the muon sach da muon!" << endl;
+    }   
 }
 
 void Library::returnBook(const string& readerID, const string& bookID) {
     Reader* reader = findReaderbyID(readerID);
     Book* book = findBookbyID(bookID);
-
-    if (reader != nullptr && book != nullptr) {
+    if (reader == nullptr) {
+        cout << "Doc gia khong ton tai." << endl;
+        return;
+    }
+    if (book == nullptr) {
+        cout << "Sach khong ton tai." << endl;
+        return;
+    }
+    if (reader->findBookInListBorrowedBooks(bookID) == true) {
         book->returnBook();
         reader->returnBook(bookID);
-		bool found = 0;
+        bool found = 0;
         Transaction* current = transactionHead;
         while (current != nullptr) {
-            if (current->getReaderID() == readerID && current->getBookID() == bookID && current->getStatus() == "Unreturned") {
+            if (current->getReaderID() == readerID && current->getBookID() == bookID && current->getStatus() == 0) {
                 current->setReturnDate(time(0));
                 current->setStatus("Returned");
                 cout << "Tra sach thanh cong!" << endl;
@@ -438,9 +449,10 @@ void Library::returnBook(const string& readerID, const string& bookID) {
             }
             current = current->getNext();
         }
-		if (!found) cout << "Khong tim thay giao dich" << endl;
-    } else {
-        cout << "Doc gia hoac sach khong ton tai." << endl;
+    }
+    else {
+        cout << "Khong ton tai giao dich muon sach!" << endl;
+        return;
     }
 }
 char toLower(char ch) {
@@ -522,7 +534,8 @@ void Library::overdueBooks() const {
     bool found = false;
     while (current != nullptr) {
         if (current->isOverdue()) {
-            current->printTransaction();
+            if (!found) Transaction::printTable();
+            current->printInfo();
             found = true;
         }
         current = current->getNext();
@@ -534,9 +547,15 @@ void Library::overdueBooks() const {
 
 void Library::listTransactions() const {
     Transaction* current = transactionHead;
+    bool found = false;
     while (current != nullptr) {
-        current->printTransaction();
+        if (!found) Transaction::printTable();
+        current->printInfo();
+        found = true;
         current = current->getNext();
+    }
+    if (!found) {
+        cout << "Khong co giao dich." << endl;
     }
 }
 

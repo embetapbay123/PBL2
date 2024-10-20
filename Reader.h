@@ -12,6 +12,7 @@ class Reader;
 
 class Reader: public Element {
 private:
+    static int countReader;
     string gender;
     string className;
     string address;
@@ -20,8 +21,12 @@ private:
     int borrowedCount;
     Reader* next; 
 public:
-    Reader();
-    Reader(string readerID, string name, string gender, string className, string address, string phoneNumber);
+    static string generateID() {
+        return "R" + toString(countReader++); 
+    }
+    Reader() : borrowedCount(0), next(nullptr) {}
+    Reader(string Name, string Gender, string ClassName, string Address, string PhoneNumber)
+    : Element(generateID(), Name), gender(Gender), className(ClassName), address(Address), phoneNumber(PhoneNumber), borrowedCount(0), next(nullptr) {}
     string getGender() const {return gender;}
     string getClassName() const {return className;}
     string getAddress() const {return address;}
@@ -31,7 +36,7 @@ public:
     void borrowBook(string bookID);
     void returnBook(string bookID);
     static void printTable() {
-		 cout << left << setw(10) << "ID"
+		 cout << left << setw(5) << "ID"
          << setw(30) << "Ten"
          << setw(10) << "Gioi tinh"
          << setw(15) << "Lop"
@@ -41,7 +46,7 @@ public:
     	 cout << "------------------------------------------------------------------------------------------------------------------------" << endl;
 	}
     void printInfo() const {
-    	cout << left << setw(10) << id
+    	cout << left << setw(5) << id
          << setw(30) << name
          << setw(10) << gender
          << setw(15) << className
@@ -50,6 +55,7 @@ public:
          << setw(10) << borrowedCount << endl;
 	}
     void listBorrowedBooks(Book* headBook) const;
+    bool findBookInListBorrowedBooks(const string& bookID) const;
     void setGender(const string& newGender) {
         gender = newGender;
     }
@@ -68,11 +74,6 @@ public:
 };
 
 // Implementation of Reader class
-Reader::Reader() : borrowedCount(0), next(nullptr) {}
-
-Reader::Reader(string readerID, string Name, string Gender, string ClassName, string Address, string PhoneNumber)
-    : Element(readerID, Name), gender(Gender), className(ClassName), address(Address), phoneNumber(PhoneNumber), borrowedCount(0), next(nullptr) {}
-
 void Reader::borrowBook(string bookID) { 
     if (borrowedCount < MAX_BORROWED_BOOKS) {
         borrowedBookIDs[borrowedCount] = bookID;
@@ -108,5 +109,15 @@ void Reader::listBorrowedBooks(Book* headBook) const {
     }
 }
 
-#endif
+bool Reader::findBookInListBorrowedBooks(const string& bookID) const {
+    for (int i = 0; i < borrowedCount; i++) {
+        if (borrowedBookIDs[i] == bookID) {
+            return true; // Tìm thấy sách trong danh sách
+        }
+    }
+    return false; // Không tìm thấy sách
+}
 
+int Reader::countReader = 1;
+
+#endif

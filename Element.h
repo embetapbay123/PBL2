@@ -8,6 +8,18 @@ using namespace std;
 
 class Element;
 
+string toString(int number) {
+	string result = "";
+	while (number > 0) {
+		result = static_cast<char>((number % 10) + '0') + result;
+		number /= 10;
+	}
+	while (result.length() < 3) {
+        result = '0' + result;
+    }
+    return result;
+}
+
 class Element {
 protected :
 	string id;
@@ -25,6 +37,7 @@ public :
 	   	name = newName;
 	}
 	static void printTable(); 
+	static string generateID();
     virtual void printInfo() const = 0;  
     virtual Element* getNext() const = 0;
 };

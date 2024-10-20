@@ -10,6 +10,7 @@ class Book;
 
 class Book : public Element {
 private:
+    static int countBook;
     string author;
     string category;
     int year;
@@ -19,8 +20,11 @@ private:
     Book* next; 
 
 public:
-    Book();
-    Book(string id, string title, string author, string category, int year, int pages, int totalCopies);
+    static string generateID() {
+        return "B" + toString(countBook++); 
+    }
+    Book() : year(0), pages(0), totalCopies(0), availableCopies(0), next(nullptr) {}
+    Book(string title, string Author, string Category, int Year, int Pages, int TotalCopies) : Element(generateID(), title), author(Author), category(Category), year(Year), pages(Pages), totalCopies(TotalCopies), availableCopies(TotalCopies), next(nullptr) {}
     string getAuthor() const {return author;}
 	int getYear() const {return year;}
 	int getPages() const {return pages;}
@@ -32,21 +36,21 @@ public:
     void borrowBook();
     void returnBook();
     static void printTable() {
-		cout << left << setw(10) << "ID"
+		cout << left << setw(5) << "ID"
          << setw(35) << "Tieu de"
          << setw(20) << "Tac gia"
          << setw(15) << "The loai"
-         << setw(10) << "Nam"
+         << setw(5) << "Nam"
          << setw(10) << "Trang"
          << setw(15) << "Sach hien co/Toan bo" << endl;
     	cout << "-----------------------------------------------------------------------------------------------------------------------" << endl;
 	}
 	void printInfo() const {
-    	cout << left << setw(10) << id
+    	cout << left << setw(5) << id
          << setw(35) << name
          << setw(20) << author
          << setw(15) << category
-         << setw(10) << year
+         << setw(5) << year
          << setw(10) << pages
          << setw(15) << availableCopies << "/" << totalCopies << endl;
 	}
@@ -70,10 +74,6 @@ public:
 };
 
 // Implementation of Book class
-Book::Book() : year(0), pages(0), totalCopies(0), availableCopies(0), next(nullptr) {}
-
-Book::Book(string ID, string title, string Author, string Category, int Year, int Pages, int TotalCopies)
-    : Element(ID, title), author(Author), category(Category), year(Year), pages(Pages), totalCopies(TotalCopies), availableCopies(TotalCopies), next(nullptr) {}
 
 void Book::borrowBook() {
     if (availableCopies > 0) {
@@ -86,6 +86,8 @@ void Book::returnBook() {
         availableCopies++;
     }
 }
+
+int Book::countBook = 1;
 
 #endif
 

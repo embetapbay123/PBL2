@@ -2,6 +2,7 @@
 #define Transaction_H
 
 #include "Reader.h"
+#include "Date.h"
 
 using namespace std;
 
@@ -9,62 +10,65 @@ class Transaction;
 
 class Transaction {
 private:
+    static int countTransaction;
+    string id;
     string readerID;
     string bookID;
-    time_t borrowDate;
-    time_t returnDate;
-    string status;
+    Date borrowDate;
+    Date returnDate;
+    bool status; 
+    /*0 is Unreturned
+      1 is Returned
+    */
     Transaction* next;
 
 public:
-    Transaction();
-    Transaction(string readerID, string bookID, time_t borrowDate);
-    string getReaderID() const;
-    string getBookID() const;
-    string getStatus() const;
-    void setReturnDate(time_t returnDate);
-    void setStatus(const string& status);
-    void printTransaction() const;
+    static string generateID() {
+        return "T" + toString(countTransaction++); 
+    }
+    Transaction() : next(nullptr) {}
+    Transaction(string ReaderID, string BookID, Date BorrowDate): id(generateID()),readerID(ReaderID), bookID(BookID), borrowDate(BorrowDate), status(0), next(nullptr) {}
+    
+    string getId() const {return id;}
+    string getReaderID() const {return readerID;}
+    string getBookID() const {return bookID;}
+    Date getBorrowDate() const {return borrowDate;}
+    Date getReturnDate() const {return returnDate;}
+    bool getStatus() const {return status;}
+    Transaction* getNext() const {return next;}
+
+    void setReturnDate(const Date& newReturnDate) {returnDate = newReturnDate;}
+    void setStatus(const bool& newStatus) {status = newStatus;}
+    void setNext(Transaction* newNext) {next = newNext;}
+
+    static void printTable() {
+		 cout << left << setw(5) << "ID"
+         << setw(15) << "Reader ID"
+         << setw(15) << "Book ID"
+         << setw(15) << "Ngay muon"
+         << setw(30) << "Ngay tra"
+         << setw(15) << "Trang thai" << endl;
+    	 cout << "------------------------------------------------------------------------------------------" << endl;
+	}
+    void printInfo() const {
+        cout << left << setw(5) << id
+         << setw(15) << readerID
+         << setw(15) << bookID
+         << setw(15) << borrowDate.info()
+         << setw(30) << (status ? returnDate.info() : "NULL")
+         << setw(15) << (status ? "Da tra" : "Chua tra") << endl;
+    }
     bool isOverdue() const;
-    Transaction* getNext() const;
-    void setNext(Transaction* nextTransaction);
 };
 
 // Implementation of Transaction class
-Transaction::Transaction() : borrowDate(0), returnDate(0), status("Unreturned"), next(nullptr) {}
-
-Transaction::Transaction(string ReaderID, string BookID, time_t BorrowDate)
-    : readerID(ReaderID), bookID(BookID), borrowDate(BorrowDate), returnDate(0), status("Unreturned"), next(nullptr) {}
-
-string Transaction::getReaderID() const { return readerID; }
-
-string Transaction::getBookID() const { return bookID; }
-
-string Transaction::getStatus() const { return status; }
-
-void Transaction::setReturnDate(time_t ReturnDate) { this->returnDate = ReturnDate; }
-
-void Transaction::setStatus(const string& Status) { this->status = Status; }
-
-void Transaction::printTransaction() const {
-    cout << "Reader ID: " << readerID << ", Book ID: " << bookID
-         << ", Borrow Date: " << ctime(&borrowDate)
-         << ", Status: " << status << endl;
-}
-
 bool Transaction::isOverdue() const {
     time_t now = time(0);
-    double secondsDiff = difftime(now, borrowDate);
-    int daysDiff = (int)secondsDiff / (60 * 60 * 24);
-    return (daysDiff > 30 && status == "Unreturned");
+    int daysDiff = borrowDate.diff(Date(now));
+    return daysDiff >= 30;
 }
 
-Transaction* Transaction::getNext() const {
-    return next;
-}
+int Transaction::countTransaction = 1;
 
-void Transaction::setNext(Transaction* nextTransaction) {
-    next = nextTransaction;
-}
 #endif
 
