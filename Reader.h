@@ -13,7 +13,7 @@ class Reader;
 class Reader: public Element {
 private:
     static int countReader;
-    string gender;
+    bool gender; /*0 la nam, 1 la nu*/
     string className;
     string address;
     string phoneNumber;
@@ -25,9 +25,13 @@ public:
         return "R" + toString(countReader++); 
     }
     Reader() : borrowedCount(0), next(nullptr) {}
-    Reader(string Name, string Gender, string ClassName, string Address, string PhoneNumber)
+    Reader(string ReaderID,string Name, bool Gender, string ClassName, string Address, string PhoneNumber)
+    : Element(ReaderID, Name), gender(Gender), className(ClassName), address(Address), phoneNumber(PhoneNumber), borrowedCount(0), next(nullptr) {
+        if (countReader <= toInt(ReaderID, 1)) countReader = toInt(ReaderID, 1) + 1;
+    }
+    Reader(string Name, bool Gender, string ClassName, string Address, string PhoneNumber)
     : Element(generateID(), Name), gender(Gender), className(ClassName), address(Address), phoneNumber(PhoneNumber), borrowedCount(0), next(nullptr) {}
-    string getGender() const {return gender;}
+    bool getGender() const {return gender;}
     string getClassName() const {return className;}
     string getAddress() const {return address;}
     string getPhoneNumber() const {return phoneNumber;}
@@ -35,7 +39,7 @@ public:
     Reader* getNext() const {return (next);}
     void borrowBook(string bookID);
     void returnBook(string bookID);
-    static void printTable() {
+    virtual void printTable() {
 		 cout << left << setw(5) << "ID"
          << setw(30) << "Ten"
          << setw(10) << "Gioi tinh"
@@ -48,7 +52,7 @@ public:
     void printInfo() const {
     	cout << left << setw(5) << id
          << setw(30) << name
-         << setw(10) << gender
+         << setw(10) << (gender ? "Nam" : "Nu")
          << setw(15) << className
          << setw(30) << address
          << setw(15) << phoneNumber
@@ -56,7 +60,7 @@ public:
 	}
     void listBorrowedBooks(Book* headBook) const;
     bool findBookInListBorrowedBooks(const string& bookID) const;
-    void setGender(const string& newGender) {
+    void setGender(const bool& newGender) {
         gender = newGender;
     }
     void setClassName(const string& newClassName) {

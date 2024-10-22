@@ -24,7 +24,14 @@ public:
         return "B" + toString(countBook++); 
     }
     Book() : year(0), pages(0), totalCopies(0), availableCopies(0), next(nullptr) {}
-    Book(string title, string Author, string Category, int Year, int Pages, int TotalCopies) : Element(generateID(), title), author(Author), category(Category), year(Year), pages(Pages), totalCopies(TotalCopies), availableCopies(TotalCopies), next(nullptr) {}
+    Book(string bookID, string title, string Author, string Category, int Year, int Pages, int TotalCopies) : 
+        Element(bookID, title), author(Author), category(Category), year(Year), pages(Pages), 
+            totalCopies(TotalCopies), availableCopies(TotalCopies), next(nullptr) {
+                 if (countBook <= toInt(bookID, 1)) countBook = toInt(bookID, 1) + 1;
+            }
+    Book(string title, string Author, string Category, int Year, int Pages, int TotalCopies) : 
+        Element(generateID(), title), author(Author), category(Category), year(Year), pages(Pages),
+            totalCopies(TotalCopies), availableCopies(TotalCopies), next(nullptr) {}
     string getAuthor() const {return author;}
 	int getYear() const {return year;}
 	int getPages() const {return pages;}
@@ -35,7 +42,7 @@ public:
 	}
     void borrowBook();
     void returnBook();
-    static void printTable() {
+    virtual void printTable() {
 		cout << left << setw(5) << "ID"
          << setw(35) << "Tieu de"
          << setw(20) << "Tac gia"

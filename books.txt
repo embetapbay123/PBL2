@@ -1,10 +1,10 @@
-Co gai den tu hom qua,Nguyen Nhat Anh,Van hoc,2015,200,3
-Mat biec,Nguyen Nhat Anh,Van hoc,1990,250,25
-Dac Nhan Tam,Dale Carnegie,Kinh doanh,1936,320,40
-Toi thay hoa vang tren co xanh,Nguyen Nhat Anh,Van hoc,2015,300,20
-Lanh dao bang trai tim,John C. Maxwell,Kinh doanh,2002,250,15
-Di tim le song,Viktor Frankl,Tam ly,1946,250,10
-Song nhu nhung doa hoa,Kim Dung,Van hoc,2010,200,5
-Qua tang cuoc song,Tu tuong nguoi Viet,Van hoc,2018,400,60
-Cau chuyen cua mot nguoi linh,Le Minh Khai,Tai lieu,2017,350,12
-Nhung dua tre trong suong,Nguyen Huy Thiep,Van hoc,1995,180,20
+B001,Co gai den tu hom qua,Nguyen Nhat Anh,Van hoc,2015,200,3
+B002,Mat biec,Nguyen Nhat Anh,Van hoc,1990,250,25
+B003,Dac Nhan Tam,Dale Carnegie,Kinh doanh,1936,320,40
+B004,Toi thay hoa vang tren co xanh,Nguyen Nhat Anh,Van hoc,2015,300,20
+B005,Lanh dao bang trai tim,John C. Maxwell,Kinh doanh,2002,250,15
+B006,Di tim le song,Viktor Frankl,Tam ly,1946,250,10
+B007,Song nhu nhung doa hoa,Kim Dung,Van hoc,2010,200,5
+B008,Qua tang cuoc song,Tu tuong nguoi Viet,Van hoc,2018,400,60
+B009,Cau chuyen cua mot nguoi linh,Le Minh Khai,Tai lieu,2017,350,12
+B010,Nhung dua tre trong suong,Nguyen Huy Thiep,Van hoc,1995,180,20

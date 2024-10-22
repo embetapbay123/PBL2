@@ -36,10 +36,10 @@ public:
     }
 
     string info() const {
-        string result = "(";
+        string result = "";
         result += toString(day, 2) + "/";
         result += toString(month, 2) + "/";
-        result += toString(year, 4) + ")";
+        result += toString(year, 4) ;
         return result;
     }
     
@@ -56,6 +56,12 @@ public:
 
     int diff(const Date& other) const {
         return other.daysSinceStart() - this->daysSinceStart();
+    }
+
+    bool isValid() const {
+        if (month < 1 || month > 12) return false; // Kiểm tra tháng
+        if (day < 1 || day > daysInMonth(month, year)) return false; // Kiểm tra ngày
+        return true;
     }
 };
 

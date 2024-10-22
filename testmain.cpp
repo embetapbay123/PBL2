@@ -10,7 +10,8 @@ using namespace std;
 void printNoti() {
     cout << "Press Enter to continue... ";
     cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Xóa bỏ bộ đệm cũ
-    cin.get(); // Đợi người dùng nhấn Enter
+    // cin.get(); // Đợi người dùng nhấn Enter
+    getchar();
 }
 
 int main() {
@@ -182,12 +183,13 @@ int main() {
                 break;
             }
             case 12: {
-			    string name, gender, className, address, phone;
+			    string name, className, address, phone;
+                bool gender;
 			    cout << "Nhap ten doc gia: ";
 			    cin.ignore(); 
 			    getline(cin, name);
 			    cout << "Nhap gioi tinh: ";
-			    getline(cin, gender);
+			    cin >> gender;
 			    cout << "Nhap lop: ";
 			    getline(cin, className);
 			    cout << "Nhap dia chi: ";
