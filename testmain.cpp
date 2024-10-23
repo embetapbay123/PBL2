@@ -16,9 +16,8 @@ void printNoti() {
 
 int main() {
     Library library;
-    library.loadBooks();
+    // library.loadBooks();
     library.loadReaders();
-
     int choice;
     do {
         cout << "\n=== MENU QUAN LY THU VIEN ===\n";

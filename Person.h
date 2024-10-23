@@ -1,5 +1,5 @@
 #ifndef Person_H
-#define Persom_H
+#define Person_H
 
 #include "Element.h"
 #include "Date.h"
