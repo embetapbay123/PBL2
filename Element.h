@@ -70,6 +70,8 @@ public :
     Element(const string& ID, const string& Name) : id(ID), name(Name) {}
 	string getId() const {return id;}
     string getName() const {return name;}
+    virtual Element* getNext() const = 0;
+    virtual Element* setNext() const = 0;
     void setId(const string& newId) {
        	id = newId;
     }

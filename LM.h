@@ -35,13 +35,20 @@ public:
 	    Reader* newReader = new Reader(name, gender, className, address, phoneNumber);
 	    return newReader;
 	}
-   
+    
+     // Them newElement vao dau LinkList
+    void addAtHead(Element* newElement, Element*& ElementHead);
+    // Them newElement vao cuoi LinkList 
+    void addAtEnd(Element* newElement, Element*& ElementHead); 
+    // Them newElement vao LinkList theo index
+	void addAtIndex(int index, Element* newElement, Element*& ElementHead); 
+
      // Them newAuthor vao dau LinkList
     void addAuthorAtHead(Author* newAuthor);
     // Them newAuthor vao cuoi LinkList 
     void addAuthorAtEnd(Author* newAuthor); 
     // Them newAuthor vao LinkList theo index
-	void addAuthorAtIndex(int index,Author* newAuthor); 
+	void addAuthorAtIndex(int index, Author* newAuthor); 
 
     // Them newBook vao dau LinkList
     void addBookAtHead(Book* newBook);
@@ -238,6 +245,48 @@ void Library::loadReaders() {
 
     file.close();
 }
+
+void Library::addAtHead(Element* newElement, Element*& ElementHead) {
+    newElement->setNext(ElementHead);
+    ElementHead = newElement;
+}
+
+void Library::addAtEnd(Element* newElement, Element*& ElementHead) {
+    if (ElementHead == nullptr) {
+        ElementHead = newElement;
+    } else {
+        Element* current = ElementHead;
+        while (current->getNext() != nullptr) {
+            current = current->getNext();
+        }
+        current->setNext(newElement);
+    }
+}
+
+void Library::addAtIndex(int index, Element* newElement, Element*& ElementHead) {
+    if (index < 0) {
+        cout << "Chi so khong hop le!" << endl;
+        return;
+    }
+
+    if (index == 0) {
+        addAtHead(newElement);
+        return;
+    }
+
+    Element* current = ElementHead;
+    for (int i = 0; i < index - 1; i++) {
+        if (current == nullptr) {
+            cout << "Chi so vuot qua so luong sach!" << endl;
+            return;
+        }
+        current = current->getNext();
+    }
+
+    newElement->setNext(current->getNext());
+    current->setNext(newElement);
+}
+
 
 void Library::addAuthorAtHead(Author* newAuthor) {
     newAuthor->setNext(authorHead);
