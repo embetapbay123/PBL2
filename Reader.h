@@ -65,8 +65,8 @@ public:
     void setPhoneNumber(const string& newPhoneNumber) {
         phoneNumber = newPhoneNumber;
     }
-    void setNext(Reader* newReader) {
-    	next = newReader;
+    void setNext(Element* newElement) {
+    	next = static_cast<Reader*> (newElement);
 	}
 };
 

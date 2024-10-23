@@ -45,8 +45,8 @@ public:
     void setBornYear(const int& newBornYear) {
         bornYear = newBornYear;
     }
-    void setNext(Author* newAuthor) {
-    	next = newAuthor;
+    void setNext(Element* newElement) {
+    	next = static_cast<Author*> (newElement);
 	}
 };
 

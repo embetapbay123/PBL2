@@ -78,7 +78,7 @@ public:
         totalCopies = newTotalCopies;
         availableCopies = newTotalCopies;
     }
-    void setNext(Book* newBook) {next = newBook;}
+    void setNext(Element* newElement) {(next) = static_cast<Book*>(newElement);}
 };
 
 // Implementation of Book class

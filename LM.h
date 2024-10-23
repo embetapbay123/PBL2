@@ -270,7 +270,7 @@ void Library::addAtIndex(int index, Element* newElement, Element*& ElementHead) 
     }
 
     if (index == 0) {
-        addAtHead(newElement);
+        addAtHead(newElement, ElementHead);
         return;
     }
 
