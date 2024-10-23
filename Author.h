@@ -1,51 +1,49 @@
 #ifndef Author_H
 #define Author_H
 
-#include "Element.h"
+#include "Person.h"
 #include <iomanip>
 using namespace std;
 
 class Author;
 
-class Author: public Element {
+class Author: public Person {
 private:
     static int countAuthor;
     bool gender; // 0 là nam, 1 là nữ
     int bornYear;
-    int countBook;
     Author* next; 
 public:
     static string generateID() {
         return "A" + toString(countAuthor++); 
     }
     Author() : next(nullptr) {}
+    Author(string AuthorID,string Name, bool Gender, int BornYear)
+    : Person(AuthorID, Name, Gender), bornYear(BornYear), next(nullptr) {
+        if (countAuthor <= toInt(AuthorID, 1)) countAuthor = toInt(AuthorID, 1) + 1;
+    }
     Author(string Name, bool Gender, int BornYear)
-    : Element(generateID(), Name), gender(Gender), bornYear(BornYear), countBook(0), next(nullptr) {}
+    : Person(generateID(), Name, Gender), bornYear(BornYear), next(nullptr) {}
     bool getGender() {return gender;}
     int getBornYear() {return bornYear;}
-    int getCountBook() {return countBook;}
     Author* getNext() const {return (next);}
     void printTable() {
 		 cout << left << setw(5) << "ID"
          << setw(30) << "Ten"
          << setw(10) << "Gioi tinh"
-         << setw(10) << "Nam sinh" << endl;
+         << setw(10) << "Nam sinh"
+         << setw(10) << "So sach" << endl;
     	 cout << "---------------------------------------------------" << endl;
 	}
     void printInfo() const {
     	cout << left << setw(5) << id
          << setw(30) << name
          << setw(10) << (gender ? "Nam" : "Nu")
-         << setw(10) << bornYear << endl;
+         << setw(10) << bornYear
+         << setw(10) << bookCount << endl;
 	}
-    void setGender(const bool& newGender) {
-        gender = newGender;
-    }
     void setBornYear(const int& newBornYear) {
         bornYear = newBornYear;
-    }
-    void setCountBook(const int& newCountBook) {
-        countBook = newCountBook;
     }
     void setNext(Author* newAuthor) {
     	next = newAuthor;

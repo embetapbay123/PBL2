@@ -11,23 +11,24 @@ class Person;
 class Person: public Element {
 protected:
     bool gender; 
-    Date birthDay;
     int bookCount;
 public:
     Person() {}
-    Person(string personID, string Name, bool Gender, Date BirthDay)
-    : Element(personID, Name), gender(Gender), birthDay(BirthDay), bookCount(0) {}
+    Person(string personID, string Name, bool Gender)
+    : Element(personID, Name), gender(Gender), bookCount(0) {}
     bool getGender() {return gender;}
-    int getCountBook() {return bookCount;}
-   
+    int getbookCount() {return bookCount;}
     void setGender(const bool& newGender) {
         gender = newGender;
     }
-    void setBirthDay(const int& newBirthDay) {
-        birthDay = newBirthDay;
-    }
     void setCountBook(const int& newCountBook) {
         bookCount = newCountBook;
+    }
+    void incresingBookCount () {
+        bookCount++;
+    }
+    void decresingBookCount () {
+        bookCount--;
     }
 };
 

@@ -1,7 +1,7 @@
 #ifndef Reader_H
 #define Reader_H
 
-#include "Element.h"
+#include "Person.h"
 #include "Book.h"
 
 using namespace std;
@@ -10,32 +10,28 @@ const int MAX_BORROWED_BOOKS = 5;
 
 class Reader;
 
-class Reader: public Element {
+class Reader: public Person {
 private:
     static int countReader;
-    bool gender; /*0 la nam, 1 la nu*/
     string className;
     string address;
     string phoneNumber;
     string borrowedBookIDs[MAX_BORROWED_BOOKS]; 
-    int borrowedCount;
     Reader* next; 
 public:
     static string generateID() {
         return "R" + toString(countReader++); 
     }
-    Reader() : borrowedCount(0), next(nullptr) {}
+    Reader() : next(nullptr) {}
     Reader(string ReaderID,string Name, bool Gender, string ClassName, string Address, string PhoneNumber)
-    : Element(ReaderID, Name), gender(Gender), className(ClassName), address(Address), phoneNumber(PhoneNumber), borrowedCount(0), next(nullptr) {
+    : Person(ReaderID, Name, Gender), className(ClassName), address(Address), phoneNumber(PhoneNumber), next(nullptr) {
         if (countReader <= toInt(ReaderID, 1)) countReader = toInt(ReaderID, 1) + 1;
     }
     Reader(string Name, bool Gender, string ClassName, string Address, string PhoneNumber)
-    : Element(generateID(), Name), gender(Gender), className(ClassName), address(Address), phoneNumber(PhoneNumber), borrowedCount(0), next(nullptr) {}
-    bool getGender() const {return gender;}
+    : Person(generateID(), Name, Gender), className(ClassName), address(Address), phoneNumber(PhoneNumber), next(nullptr) {}
     string getClassName() const {return className;}
     string getAddress() const {return address;}
     string getPhoneNumber() const {return phoneNumber;}
-    int getBorrowedBooksCount() const {return borrowedCount;}
     Reader* getNext() const {return (next);}
     void borrowBook(string bookID);
     void returnBook(string bookID);
@@ -56,13 +52,10 @@ public:
          << setw(15) << className
          << setw(30) << address
          << setw(15) << phoneNumber
-         << setw(10) << borrowedCount << endl;
+         << setw(10) << bookCount << endl;
 	}
     void listBorrowedBooks(Book* headBook) const;
     bool findBookInListBorrowedBooks(const string& bookID) const;
-    void setGender(const bool& newGender) {
-        gender = newGender;
-    }
     void setClassName(const string& newClassName) {
         className = newClassName;
     }
@@ -79,30 +72,30 @@ public:
 
 // Implementation of Reader class
 void Reader::borrowBook(string bookID) { 
-    if (borrowedCount < MAX_BORROWED_BOOKS) {
-        borrowedBookIDs[borrowedCount] = bookID;
-        borrowedCount++;
+    if (bookCount < MAX_BORROWED_BOOKS) {
+        borrowedBookIDs[bookCount] = bookID;
+        bookCount++;
     }
 }
 
 void Reader::returnBook(string bookID) { 
-    for (int i = 0; i < borrowedCount; i++) {
+    for (int i = 0; i < bookCount; i++) {
         if (borrowedBookIDs[i] == bookID) {
-            for (int j = i; j < borrowedCount - 1; j++) {
+            for (int j = i; j < bookCount - 1; j++) {
                 borrowedBookIDs[j] = borrowedBookIDs[j + 1];
             }
-            borrowedCount--;
+            bookCount--;
             break;
         }
     }
 }
 
 void Reader::listBorrowedBooks(Book* headBook) const {
-    if (borrowedCount == 0) {
+    if (bookCount == 0) {
         cout << "Khong co sach nao dang muon." << endl;
         return;
     }
-    for (int i = 0; i < borrowedCount; i++) {
+    for (int i = 0; i < bookCount; i++) {
         Book* current = headBook;
         while (current != nullptr) {
             if (current->getId() == borrowedBookIDs[i]) {
@@ -114,7 +107,7 @@ void Reader::listBorrowedBooks(Book* headBook) const {
 }
 
 bool Reader::findBookInListBorrowedBooks(const string& bookID) const {
-    for (int i = 0; i < borrowedCount; i++) {
+    for (int i = 0; i < bookCount; i++) {
         if (borrowedBookIDs[i] == bookID) {
             return true; // Tìm thấy sách trong danh sách
         }
