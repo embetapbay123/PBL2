@@ -6,7 +6,6 @@
 using namespace std;
 
 class Author;
-class Book;
 
 class Author: public Element {
 private:
@@ -26,7 +25,7 @@ public:
     int getBornYear() {return bornYear;}
     int getCountBook() {return countBook;}
     Author* getNext() const {return (next);}
-    static void printTable() {
+    void printTable() {
 		 cout << left << setw(5) << "ID"
          << setw(30) << "Ten"
          << setw(10) << "Gioi tinh"
@@ -39,11 +38,6 @@ public:
          << setw(10) << (gender ? "Nam" : "Nu")
          << setw(10) << bornYear << endl;
 	}
-    void listBorrowedBooks(Book* headBook) const;
-    bool findBookInListBorrowedBooks(const string& bookID) const;
-    void setGender(const bool& newGender) {
-        gender = newGender;
-    }
     void setGender(const bool& newGender) {
         gender = newGender;
     }
