@@ -34,6 +34,7 @@ public:
         Element(generateID(), title), authorPtr(AuthorPtr), category(Category), year(Year), pages(Pages),
             totalCopies(TotalCopies), availableCopies(TotalCopies), next(nullptr) {}
     Author* getAuthorPtr() const {return authorPtr;}
+    string getAuthorID() const {return authorPtr->getId();}
 	int getYear() const {return year;}
 	int getPages() const {return pages;}
 	int getTotalCopies() const {return totalCopies;}

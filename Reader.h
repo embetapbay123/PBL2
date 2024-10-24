@@ -16,7 +16,6 @@ private:
     string className;
     string address;
     string phoneNumber;
-    string borrowedBookIDs[MAX_BORROWED_BOOKS]; 
     Reader* next; 
 public:
     static string generateID() {
@@ -33,8 +32,8 @@ public:
     string getAddress() const {return address;}
     string getPhoneNumber() const {return phoneNumber;}
     Reader* getNext() const {return (next);}
-    void borrowBook(string bookID);
-    void returnBook(string bookID);
+    void borrowBook();
+    void returnBook();
     virtual void printTable() {
 		 cout << left << setw(5) << "ID"
          << setw(30) << "Ten"
@@ -54,8 +53,6 @@ public:
          << setw(15) << phoneNumber
          << setw(10) << bookCount << endl;
 	}
-    void listBorrowedBooks(Book* headBook) const;
-    bool findBookInListBorrowedBooks(const string& bookID) const;
     void setClassName(const string& newClassName) {
         className = newClassName;
     }
@@ -71,48 +68,14 @@ public:
 };
 
 // Implementation of Reader class
-void Reader::borrowBook(string bookID) { 
+void Reader::borrowBook() { 
     if (bookCount < MAX_BORROWED_BOOKS) {
-        borrowedBookIDs[bookCount] = bookID;
         bookCount++;
     }
 }
 
-void Reader::returnBook(string bookID) { 
-    for (int i = 0; i < bookCount; i++) {
-        if (borrowedBookIDs[i] == bookID) {
-            for (int j = i; j < bookCount - 1; j++) {
-                borrowedBookIDs[j] = borrowedBookIDs[j + 1];
-            }
-            bookCount--;
-            break;
-        }
-    }
-}
-
-void Reader::listBorrowedBooks(Book* headBook) const {
-    if (bookCount == 0) {
-        cout << "Khong co sach nao dang muon." << endl;
-        return;
-    }
-    for (int i = 0; i < bookCount; i++) {
-        Book* current = headBook;
-        while (current != nullptr) {
-            if (current->getId() == borrowedBookIDs[i]) {
-                current->printInfo();
-            }
-            current = current->getNext();
-        }
-    }
-}
-
-bool Reader::findBookInListBorrowedBooks(const string& bookID) const {
-    for (int i = 0; i < bookCount; i++) {
-        if (borrowedBookIDs[i] == bookID) {
-            return true; // Tìm thấy sách trong danh sách
-        }
-    }
-    return false; // Không tìm thấy sách
+void Reader::returnBook() { 
+    if (bookCount > 0) bookCount--;
 }
 
 int Reader::countReader = 1;
