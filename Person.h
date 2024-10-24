@@ -16,8 +16,8 @@ public:
     Person() {}
     Person(string personID, string Name, bool Gender)
     : Element(personID, Name), gender(Gender), bookCount(0) {}
-    bool getGender() {return gender;}
-    int getbookCount() {return bookCount;}
+    bool getGender() const {return gender;}
+    int getbookCount() const {return bookCount;}
     void setGender(const bool& newGender) {
         gender = newGender;
     }
@@ -30,6 +30,7 @@ public:
     void decresingBookCount () {
         bookCount--;
     }
+    // void create
 };
 
 #endif
