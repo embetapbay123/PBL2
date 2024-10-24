@@ -8,7 +8,7 @@ using namespace std;
 
 class Transaction;
 
-class Transaction {
+class Transaction : public Element {
 private:
     static int countTransaction;
     string id;
@@ -39,9 +39,9 @@ public:
 
     void setReturnDate(const Date& newReturnDate) {returnDate = newReturnDate;}
     void setStatus(const bool& newStatus) {status = newStatus;}
-    void setNext(Transaction* newNext) {next = newNext;}
+    void setNext(Element* newNext) {next = static_cast<Transaction*> (newNext);}
 
-    static void printTable() {
+    void printTable() {
 		 cout << left << setw(5) << "ID"
          << setw(15) << "Reader ID"
          << setw(15) << "Book ID"

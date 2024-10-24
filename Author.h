@@ -10,7 +10,6 @@ class Author;
 class Author: public Person {
 private:
     static int countAuthor;
-    bool gender; // 0 là nam, 1 là nữ
     int bornYear;
     Author* next; 
 public:
@@ -24,7 +23,6 @@ public:
     }
     Author(string Name, bool Gender, int BornYear)
     : Person(generateID(), Name, Gender), bornYear(BornYear), next(nullptr) {}
-    bool getGender() {return gender;}
     int getBornYear() {return bornYear;}
     Author* getNext() const {return (next);}
     void printTable() {

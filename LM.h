@@ -69,6 +69,8 @@ public:
 	// Xóa Reader theo ID ra khỏi LinkList nếu có -- nên sửa bool
     void deleteReader(const string& readerID); 
 
+    // In ra danh sách author
+    void listAuthors() const;
     // In ra danh sách book
     void listBooks() const; 
     // In ra danh sách reader
@@ -104,7 +106,7 @@ public:
 };
 
 // Implementation of Library class
-Library::Library() : bookHead(nullptr), readerHead(nullptr), transactionHead(nullptr) {}
+Library::Library() : authorHead(nullptr), bookHead(nullptr), readerHead(nullptr), transactionHead(nullptr) {}
 
 Library::~Library() {
     Book* currentBook = bookHead;
@@ -160,7 +162,7 @@ void Library::loadTransaction() {
 void Library::loadAuthors() {
     ifstream file("authors.txt");
     if (!file.is_open()) {
-        cout << "Khong the mo file Authors.txt" << endl;
+        cout << "Khong the mo file authors.txt" << endl;
         return;
     }
 
@@ -176,7 +178,6 @@ void Library::loadAuthors() {
         string bornYearStr = extractField(line);
         // Tao doi tuong Author moi
         Author* newAuthor = new Author(AuthorID, name, toInt(genderString), toInt(bornYearStr));
-
         // Them vao danh sach lien ket
         addAuthorAtEnd(newAuthor);
     }
@@ -202,7 +203,9 @@ void Library::loadBooks() {
         string yearStr = extractField(line);
         string pagesStr = extractField(line);
         string totalCopiesStr = extractField(line);
-        Book* newBook = new Book(bookID,title, findAuthorbyID(authorID), category, toInt(yearStr, 0), toInt(pagesStr, 0), toInt(totalCopiesStr));
+        Author* author = findAuthorbyID(authorID);
+        author->incresingBookCount();
+        Book* newBook = new Book(bookID,title, author, category, toInt(yearStr, 0), toInt(pagesStr, 0), toInt(totalCopiesStr));
         // Them vao danh sach lien ket
         addBookAtEnd(newBook);
     }
@@ -477,6 +480,10 @@ void Library::deleteReader(const string& readerID) {
     delete temp; 
     cout << "Xoa thanh cong!" << endl;
 }
+  
+void Library::listAuthors() const {
+    list(authorHead);
+}
 
 void Library::listBooks() const {
     list(bookHead);
@@ -486,7 +493,11 @@ void Library::listReaders() const {
 	list(readerHead);
 }
 
-void Library::list(Element* Head) const{
+void Library::listTransactions() const {
+    list(transactionHead);
+}
+
+void Library::list(Element* Head) const {
     Head->printTable();
     Element* current = Head;
     while (current != nullptr) {
@@ -655,7 +666,7 @@ void Library::overdueBooks() const {
     bool found = false;
     while (current != nullptr) {
         if (current->isOverdue()) {
-            if (!found) Transaction::printTable();
+            if (!found) current->printTable();
             current->printInfo();
             found = true;
         }
@@ -663,20 +674,6 @@ void Library::overdueBooks() const {
     }
     if (!found) {
         cout << "Khong co giao dich qua han." << endl;
-    }
-}
-
-void Library::listTransactions() const {
-    Transaction* current = transactionHead;
-    bool found = false;
-    while (current != nullptr) {
-        if (!found) Transaction::printTable();
-        current->printInfo();
-        found = true;
-        current = current->getNext();
-    }
-    if (!found) {
-        cout << "Khong co giao dich." << endl;
     }
 }
 
