@@ -68,6 +68,8 @@ public:
 	void deleteBook(const string& bookID); 
 	// Xóa Reader theo ID ra khỏi LinkList nếu có -- nên sửa bool
     void deleteReader(const string& readerID); 
+    // Xóa Author theo ID ra khỏi LinkList nếu có -- nên sửa bool
+    void deleteAuthor(const string& authorID);
 
     // In ra danh sách author
     void listAuthors() const;
@@ -93,6 +95,8 @@ public:
     void searchBookByTitle(const string& title) const; 
     // Tìm reader có name
     void searchReaderByName(const string& name) const; 
+    // Tìm author có name
+    void searchAuthorByName(const string& name) const;
     bool searchByName(const string &name, Element* Head) const;
     // In ra thông tin cuốn có ID
     void infoBookbyID(const string& bookID);
@@ -403,6 +407,43 @@ void Library::addTransactionAtIndex(int index, Transaction* newTransaction) {
     current->setNext(newTransaction);
 }
 
+void Library::deleteAuthor(const string& authorID) {
+    if (authorHead) {
+        cout << "Khong ton tai tac co id " << authorID << endl;
+        return;
+    }
+
+    if (authorHead->getId() == authorID) {
+        if (authorHead->getbookCount() != 0) {
+            cout << "Sach cua tac gia van con, khong the xoa." << endl;
+            return;
+        }
+        Author* temp = authorHead;
+        authorHead = authorHead->getNext(); 
+        delete temp; 
+        cout << "Xoa thanh cong!" << endl;
+        return;
+    }
+
+    Author* current = authorHead;
+
+    while (current->getNext() && current->getNext()->getId() != authorID) {
+        current = current->getNext();
+    }
+
+    if (!current->getNext()) {
+        cout << "Khong ton tai tac gia co id " << authorID << endl;
+        return;
+    }
+    if (current->getNext()->getbookCount() != 0) {
+        cout << "Tac gia van con sach, khong the xoa." << endl;
+        return;
+    }
+    Author* temp = current->getNext();
+    current->setNext(current->getNext()->getNext()); 
+    delete temp; 
+    cout << "Xoa thanh cong!" << endl;
+}
 
 void Library::deleteBook(const string& bookID) {
     if (!bookHead) {
@@ -440,6 +481,7 @@ void Library::deleteBook(const string& bookID) {
     Book* temp = current->getNext();
     current->setNext(current->getNext()->getNext()); 
     delete temp; 
+    temp->getAuthorPtr()->decresingBookCount();
     cout << "Xoa thanh cong!" << endl;
 }
 
@@ -468,7 +510,7 @@ void Library::deleteReader(const string& readerID) {
     }
 
     if (!current->getNext()) {
-        cout << "Khong ton tai sach co id " << readerID << endl;
+        cout << "Khong ton tai nguoi doc co id " << readerID << endl;
         return;
     }
     if (current->getNext()->getbookCount() != 0) {
@@ -612,18 +654,16 @@ void Library::searchBookByTitle(const string& title) const {
 }
 
 void Library::searchReaderByName(const string& name) const {
-    // Reader* current = readerHead;
     bool found = searchByName(name, readerHead);
-    // while (current != nullptr) {
-    //     if (isSubstring(current->getName(), name)) {
-    //     	// if (!found) Reader::printTable();
-    //         current->printInfo();
-    //         found = true;
-    //     }
-    //     current = current->getNext();
-    // }
     if (!found) {
         cout << "Khong tim thay doc gia ten: " << name << endl;
+    }
+}
+
+void Library::searchAuthorByName(const string& name) const {
+    bool found = searchByName(name, authorHead);
+    if (!found) {
+        cout << "Khong tim thay tac gia ten: " << name << endl;
     }
 }
 

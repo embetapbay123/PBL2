@@ -25,6 +25,16 @@ void displayMainMenu() {
     cout << "=========================================\n";
 }
 
+// Hiển thị menu quản lý tác giả
+void displayAuthorMenu() {
+    cout << "\n=== QUAN LY TAC GIA ===\n";
+    cout << "1. Danh sach tac gia\n";
+    cout << "2. Tim kiem tac gia theo ten\n";
+    cout << "3. Tra cuu thong tin tac gia theo ID\n";
+    cout << "4. Them moi tac gia\n";
+    cout << "5. Xoa tac gia\n";
+    cout << "6. Quay lai menu chinh\n";
+}
 // Hiển thị menu quản lý sách
 void displayBookMenu() {
     cout << "\n=== QUAN LY SACH ===\n";
@@ -55,6 +65,96 @@ void displayTransactionMenu() {
     cout << "3. Danh sach giao dich\n";
     cout << "4. Giao dich qua han\n";
     cout << "5. Quay lai menu chinh\n";
+}
+
+// Chức năng quản lý tác giả
+void manageAuthors(Library& library) {
+    int authorChoice;
+    do {
+        displayAuthorMenu();
+        cout << "Nhap lua chon cua ban: ";
+        cin >> authorChoice;
+
+        switch (authorChoice) {
+            case 1:
+                library.listAuthors();
+                break;
+            case 2: {
+                string name;
+                cout << "Nhap ten tac gia: ";
+                cin.ignore();
+                getline(cin, name);
+                library.searchAuthorByName(name);
+                break;
+            }
+            case 3: {
+                string AuthorID;
+                cout << "Nhap ID tac gia: ";
+                cin >> AuthorID;
+                library.infoAuthorbyID(AuthorID);
+                break;
+            }
+            case 4: {
+                string name, className, address, phone;
+                bool gender;
+                cout << "Nhap ten tac gia: ";
+                cin.ignore();
+                getline(cin, name);
+                cout << "Nhap gioi tinh (0: Nu, 1: Nam): ";
+                cin >> gender;
+                cout << "Nhap lop: ";
+                cin.ignore();
+                getline(cin, className);
+                cout << "Nhap dia chi: ";
+                getline(cin, address);
+                cout << "Nhap so dien thoai: ";
+                getline(cin, phone);
+                Author* newAuthor = library.createNewAuthor(name, gender, className, address, phone);
+
+                int addChoice;
+                cout << "1. Them vao dau danh sach\n";
+                cout << "2. Them vao cuoi danh sach\n";
+                cout << "3. Them theo chi so\n";
+                cout << "Nhap lua chon cua ban: ";
+                cin >> addChoice;
+
+                switch (addChoice) {
+                    case 1:
+                        library.addAuthorAtHead(newAuthor);
+                        cout << "Nguoi doc da duoc them vao dau danh sach." << endl;
+                        break;
+                    case 2:
+                        library.addAuthorAtEnd(newAuthor);
+                        cout << "Nguoi doc da duoc them vao cuoi danh sach." << endl;
+                        break;
+                    case 3: {
+                        int index;
+                        cout << "Nhap chi so de them tac gia: ";
+                        cin >> index;
+                        library.addAuthorAtIndex(index, newAuthor);
+                        cout << "tac gia da duoc them vao chi so " << index << "." << endl;
+                        break;
+                    }
+                    default:
+                        cout << "Lua chon khong hop le." << endl;
+                }
+                break;
+            }
+            case 5: {
+                string AuthorID;
+                cout << "Nhap ID tac gia: ";
+                cin >> AuthorID;
+                library.deleteAuthor(AuthorID);
+                break;
+            }
+            case 6:
+                cout << "Tro lai menu chinh...\n";
+                break;
+            default:
+                cout << "Lua chon khong hop le." << endl;
+        }
+        printNoti();
+    } while (authorChoice != 6);
 }
 
 // Chức năng quản lý sách
@@ -319,9 +419,11 @@ int main() {
                 manageTransactions(library);
                 break;
             case 4:
+                mana
+            case 5:
                 cout << "Chuc nang thong ke dang duoc phat trien...\n";
                 break;
-            case 5:
+            case 6:
                 cout << "Thoat chuong trinh...\n";
                 break;
             default:
