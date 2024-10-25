@@ -185,7 +185,7 @@ void manageBooks(Library& library) {
                 cin.ignore();
                 getline(cin, title);
 
-                cout << "Nhap tac gia: ";
+                cout << "Nhap ID tac gia: ";
                 getline(cin, author);
 
                 cout << "Nhap the loai: ";
@@ -201,7 +201,9 @@ void manageBooks(Library& library) {
                 cin >> totalCopies;
 
                 Book* newBook = library.createNewBook(title, author, category, year, pages, totalCopies);
-
+                if (newBook == nullptr) {
+                    cout << "Khong ton tai tac gia co id da nhap!" << endl;
+                }
                 int addChoice;
                 cout << "1. Them vao dau danh sach\n";
                 cout << "2. Them vao cuoi danh sach\n";
@@ -385,11 +387,12 @@ int main() {
     library.loadAuthors();
     library.loadBooks();
     library.loadReaders();
+    library.loadTransaction();
     int choice;
 
     do {
         displayMainMenu();
-        cout << "Nhap lua chon cua ban (1-5): ";
+        cout << "Nhap lua chon cua ban (1-6): ";
         cin >> choice;
 
         while (cin.fail()) {
@@ -421,7 +424,7 @@ int main() {
                 cout << "Lua chon khong hop le." << endl;
         }
         // printNoti();
-    } while (choice != 5);
+    } while (choice != 6);
 
     return 0;
 }

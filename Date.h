@@ -14,8 +14,23 @@ private:
 
 public:
     Date() : day(1), month(1), year(2000) {}
-    Date(int d, int m, int y) : day(d), month(m), year(y) {}
-
+    Date(int d, int m, int y) : day(d), month(m), year(y) {
+        if (!isValid()) {
+            day = 1, month = 1, year = 2000;
+        }
+    }
+    Date(const string& s) {
+        string temp = s;
+        string dayStr = extractField(temp, '/');
+        string monthStr = extractField(temp, '/');
+        string yearStr = temp;
+        day = toInt(dayStr);
+        month = toInt(monthStr);
+        year = toInt(yearStr);
+        if (!isValid()) {
+            day = 1, month = 1, year = 2000;
+        }
+}
     Date(const time_t& time) {
         tm* tm = localtime(&time);
         day = tm->tm_mday;

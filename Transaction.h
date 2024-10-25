@@ -27,8 +27,12 @@ public:
         return "T" + toString(countTransaction++); 
     }
     Transaction() : next(nullptr) {}
-    Transaction(string ReaderID, string BookID, Date BorrowDate): id(generateID()),readerID(ReaderID), bookID(BookID), borrowDate(BorrowDate), status(0), next(nullptr) {}
-    
+    Transaction(string ReaderID, string BookID, Date BorrowDate): 
+        id(generateID()),readerID(ReaderID), bookID(BookID), borrowDate(BorrowDate), status(0), next(nullptr) {}
+    Transaction(string TransactionID, string ReaderID, string BookID, Date BorrowDate): 
+        id(TransactionID),readerID(ReaderID), bookID(BookID), borrowDate(BorrowDate), status(0), next(nullptr) {
+            if (countTransaction <= toInt(TransactionID, 1)) countTransaction = toInt(TransactionID, 1) + 1;
+        }
     string getId() const {return id;}
     string getReaderID() const {return readerID;}
     string getBookID() const {return bookID;}

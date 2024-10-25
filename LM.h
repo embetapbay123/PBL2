@@ -22,7 +22,7 @@ public:
     void loadAuthors(); // Doc du lieu tu file authors.txt va them vao linklink cua author
     void loadBooks(); // Doc du lieu tu file books.txt va them vao linklist cua book
     void loadReaders(); // Doc du lieu tu file readers.txt va them vao linklist cua reader
-    void loadTransaction(); // Chua xac dinh
+    void loadTransaction(); // Doc du lieu tu file transactions.txt va them vao linklist cua transaction
     // Tao moi mot doi tuong Book
     Book* createNewBook(string title, string authorID, string category, int year, int pages, int totalCopies) {
         Author* authorPtr = findAuthorbyID(authorID);
@@ -30,6 +30,7 @@ public:
 	    Book* newBook = new Book(title, authorPtr, category, year, pages, totalCopies);
 	    return newBook;
 	}
+    // Thêm newAuthor vào đầu linklist
     void addAuthorAtHead(Author* newAuthor);
     // Them newAuthor vao cuoi LinkList 
     void addAuthorAtEnd(Author* newAuthor); 
@@ -131,7 +132,7 @@ Library::~Library() {
     }
 }
 void Library::loadTransaction() {
-    ifstream file("transaction.txt");
+    ifstream file("transactions.txt");
     if (!file.is_open()) {
         cout << "Khong the mo file transactions.txt" << endl;
         return;
@@ -142,19 +143,25 @@ void Library::loadTransaction() {
 
     while (getline(file, line)) {
         lineNumber++;
-
+        
+        string transactionID = extractField(line);
         string readerID = extractField(line);
-        string name = extractField(line);
-        string genderString = extractField(line);
-        string className = extractField(line);
-        string address = extractField(line);
-        string phoneNumber = extractField(line);
-
+        string bookID = extractField(line);
+        string borrowDatestr = extractField(line);
+        string returnDatestr = extractField(line);
+        string statusstr = extractField(line);
         // Tao doi tuong Reader moi
-        Reader* newReader = new Reader(readerID, name, toInt(genderString, 0), className, address, phoneNumber);
-
+        Transaction* newTransaction = new Transaction(transactionID, readerID, bookID, borrowDatestr);
+        if (statusstr == "1") {
+            newTransaction->setStatus(1);
+            newTransaction->setReturnDate(returnDatestr);
+        }
+        else {
+            findReaderbyID(readerID)->borrowBook();
+            findBookbyID(bookID)->borrowBook();
+        }
         // Them vao danh sach lien ket
-        addReaderAtEnd(newReader);
+        addTransactionAtEnd(newTransaction);
     }
 
     file.close();
@@ -205,7 +212,7 @@ void Library::loadBooks() {
         string totalCopiesStr = extractField(line);
         Author* author = findAuthorbyID(authorID);
         author->incresingBookCount();
-        Book* newBook = new Book(bookID,title, author, category, toInt(yearStr, 0), toInt(pagesStr, 0), toInt(totalCopiesStr));
+        Book* newBook = new Book(bookID, title, author, category, toInt(yearStr, 0), toInt(pagesStr, 0), toInt(totalCopiesStr));
         // Them vao danh sach lien ket
         addBookAtEnd(newBook);
     }
@@ -575,6 +582,7 @@ Transaction* Library::findTransactionbyBookReader(const string& readerID, const 
     }
     return nullptr;
 }
+
 void Library::borrowBook(const string& readerID, const string& bookID) {
     Reader* reader = findReaderbyID(readerID);
     Book* book = findBookbyID(bookID);
@@ -743,7 +751,7 @@ void Library::overdueBooks() const {
     Transaction* current = transactionHead;
     bool found = false;
     while (current != nullptr) {
-        if (current->isOverdue()) {
+        if (current->getStatus() == 0 && current->isOverdue()) {
             if (!found) current->printTable();
             current->printInfo();
             found = true;
