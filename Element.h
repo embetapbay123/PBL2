@@ -7,7 +7,6 @@
 using namespace std;
 
 class Element;
-// Chueyn so thanh xau
 // Ham tach chuoi dua tren vi tri dau phay va tra ve gia tri con lai
 string extractField(string &line, char c = ',') {
     size_t pos = line.find(c);
@@ -15,14 +14,14 @@ string extractField(string &line, char c = ',') {
     line = (pos != string::npos) ? line.substr(pos + 1) : "";
     return field;
 }
-
-string toString(int number) {
+// Chuyen so thanh xau
+string toString(int number, int maxsize = 3) {
 	string result = "";
 	while (number > 0) {
 		result = static_cast<char>((number % 10) + '0') + result;
 		number /= 10;
 	}
-	while (result.length() < 3) {
+	while (result.length() < maxsize) {
         result = '0' + result;
     }
     return result;
