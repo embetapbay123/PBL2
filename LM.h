@@ -7,7 +7,6 @@
 #include "Transaction.h"
 #include <fstream>
 using namespace std;
-
 class Library;
 
 class Library {
