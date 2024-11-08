@@ -31,7 +31,7 @@ public:
     Transaction(string TransactionID, string ReaderID, string BookID, Date BorrowDate, bool Status = 0): 
         id(TransactionID),readerID(ReaderID), bookID(BookID), borrowDate(BorrowDate), status(Status) {
             if (countTransaction <= toInt(TransactionID, 1)) countTransaction = toInt(TransactionID, 1) + 1;
-        }
+    }
     string getId() const {return id;}
     string getReaderID() const {return readerID;}
     string getBookID() const {return bookID;}

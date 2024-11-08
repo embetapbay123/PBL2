@@ -139,16 +139,6 @@ public:
         }
     }
 
-    void sortDecreasing(bool (*compare)(const Element&, const Element&)) {
-        if (!head || !head->next) return;
-        for (Node* i = head; i != nullptr; i = i->next) {
-            for (Node* j = i->next; j != nullptr; j = j->next) {
-                if (compare(*(i->data), *(j->data))) {
-                    swap(i->data, j->data);
-                }
-            }
-        }
-    }
     void deleteNode(Node* node) {
         if (head == nullptr || node == nullptr) {
             throw 1; // Khong ton tai du lieu node

@@ -16,7 +16,7 @@ public:
         return "A" + toString(countAuthor++); 
     }
     Author() {}
-    Author(string AuthorID,string Name, bool Gender, int BornYear)
+    Author(string AuthorID, string Name, bool Gender, int BornYear)
     : Person(AuthorID, Name, Gender), bornYear(BornYear){
         if (countAuthor <= toInt(AuthorID, 1)) countAuthor = toInt(AuthorID, 1) + 1;
     }

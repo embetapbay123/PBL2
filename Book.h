@@ -13,7 +13,7 @@ class Book : public Element {
 private:
     static int countBook;
     Author* authorPtr;
-    string category;
+    Category* categoryPtr;
     int year;
     int pages;
     int totalCopies;
@@ -23,20 +23,25 @@ public:
         return "B" + toString(countBook++); 
     }
     Book() : year(0), pages(0), totalCopies(0), availableCopies(0){}
-    Book(string bookID, string title, Author* AuthorPtr, string Category, int Year, int Pages, int TotalCopies) : 
-        Element(bookID, title), authorPtr(AuthorPtr), category(Category), year(Year), pages(Pages), 
+    Book(string bookID, string title, Author* AuthorPtr, Category* CategoryPtr, int Year, int Pages, int TotalCopies) : 
+        Element(bookID, title), authorPtr(AuthorPtr), categoryPtr(CategoryPtr), year(Year), pages(Pages), 
             totalCopies(TotalCopies), availableCopies(TotalCopies) {
-                 if (countBook <= toInt(bookID, 1)) countBook = toInt(bookID, 1) + 1;
-            }
-    Book(string title, Author* AuthorPtr, string Category, int Year, int Pages, int TotalCopies) : 
-        Element(generateID(), title), authorPtr(AuthorPtr), category(Category), year(Year), pages(Pages),
+        if (authorPtr != nullptr) authorPtr->incresingBookCount();
+        if (categoryPtr != nullptr) categoryPtr->incresingBookCount();
+        if (countBook <= toInt(bookID, 1)) countBook = toInt(bookID, 1) + 1;
+    }
+    Book(string title, Author* AuthorPtr, Category* CategoryPtr, int Year, int Pages, int TotalCopies) : 
+        Element(generateID(), title), authorPtr(AuthorPtr), categoryPtr(CategoryPtr), year(Year), pages(Pages),
             totalCopies(TotalCopies), availableCopies(TotalCopies) {}
     ~Book() {
         if (authorPtr != nullptr) authorPtr->decresingBookCount();
-        cout << "DA HUY" << endl;
+        if (categoryPtr != nullptr) categoryPtr->decresingBookCount();
+        // cout << "DA HUY" << endl;
     }
     Author* getAuthorPtr() const {return authorPtr;}
     string getAuthorID() const {return authorPtr->getId();}
+    Category* getCategoryPtr() const {return categoryPtr;}
+    string getCategoryID() const {return categoryPtr->getId();}
 	int getYear() const {return year;}
 	int getPages() const {return pages;}
 	int getTotalCopies() const {return totalCopies;}
@@ -60,7 +65,7 @@ public:
     	cout << left << setw(5) << id
          << setw(35) << name
          << setw(20) << authorPtr->getName()
-         << setw(15) << category
+         << setw(15) << categoryPtr->getName()
          << setw(5) << year
          << setw(10) << pages
          << setw(15) << availableCopies << "/" << totalCopies << endl;
@@ -68,8 +73,8 @@ public:
     void setAuthorPtr(Author* newAuthorPtr) {
         authorPtr = newAuthorPtr;
     }
-    void setCategory(const string& newCategory) {
-        category = newCategory;
+    void setCategory(Category* newCategoryPtr) {
+        categoryPtr = newCategoryPtr;
     }
     void setYear(int newYear) {
         year = newYear;

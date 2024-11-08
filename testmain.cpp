@@ -21,9 +21,20 @@ void displayMainMenu() {
     cout << "2. Quan ly Doc gia\n";
     cout << "3. Quan ly Giao dich\n";
     cout << "4. Quan ly Tac gia\n";
-    cout << "5. Thong ke, sap  xep\n";
-    cout << "6. Thoat\n";
+    cout << "5. Quan ly The loai\n";
+    cout << "6. Thong ke, sap  xep\n";
+    cout << "0. Thoat\n";
     cout << "=========================================\n";
+}
+// Hiển thị menu quản lý thể loại
+void displayCategoryMenu() {
+    cout << "\n=== QUAN LY THE LOAI ===\n";
+    cout << "1. Danh sach the loai\n";
+    cout << "2. Tim kiem the loai theo ten\n";
+    cout << "3. Tra cuu thong tin the loai theo ID\n";
+    cout << "4. Them moi the loai\n";
+    cout << "5. Xoa the loai\n";
+    cout << "6. Quay lai menu chinh\n";
 }
 // Hiển thị menu quản lý tác giả
 void displayAuthorMenu() {
@@ -63,6 +74,83 @@ void displayTransactionMenu() {
     cout << "3. Danh sach giao dich\n";
     cout << "4. Giao dich qua han\n";
     cout << "5. Quay lai menu chinh\n";
+}
+// Chức năng quản lý thể loại
+void addNewCategory(Library& library) {
+    string name;
+    cout << "Nhap ten the loai: ";
+    cin.ignore();
+    getline(cin, name);
+    Category* newCategory = new Category(name);
+    int addChoice;
+    cout << "1. Them vao dau danh sach\n";
+    cout << "2. Them vao cuoi danh sach\n";
+    cout << "3. Them theo chi so\n";
+    cout << "Nhap lua chon cua ban: ";
+    cin >> addChoice;
+    switch (addChoice) {
+        case 1:
+            library.addCategoryAtHead(newCategory);
+            break;
+        case 2:
+            library.addCategoryAtEnd(newCategory);
+            break;
+        case 3: {
+            int index;
+            cout << "Nhap chi so de them the loai: ";
+            cin >> index;
+            library.addCategoryAtIndex(index, newCategory);
+            break;
+        }
+        default:
+            cout << "Lua chon khong hop le." << endl;
+    }
+}
+void manageCategorys(Library& library) {
+    int categoryChoice;
+    do {
+        displayCategoryMenu();
+        cout << "Nhap lua chon cua ban: ";
+        cin >> categoryChoice;
+
+        switch (categoryChoice) {
+            case 1:
+                library.listCategorys();
+                break;
+            case 2: {
+                string name;
+                cout << "Nhap ten the loai: ";
+                cin.ignore();
+                getline(cin, name);
+                library.searchCategoryByName(name);
+                break;
+            }
+            case 3: {
+                string CategoryID;
+                cout << "Nhap ID the loai: ";
+                cin >> CategoryID;
+                library.infoCategorybyID(CategoryID);
+                break;
+            }
+            case 4: {
+                addNewCategory(library);
+                break;
+            }
+            case 5: {
+                string CategoryID;
+                cout << "Nhap ID the loai: ";
+                cin >> CategoryID;
+                library.deleteCategory(CategoryID);
+                break;
+            }
+            case 6:
+                cout << "Tro lai menu chinh...\n";
+                break;
+            default:
+                cout << "Lua chon khong hop le." << endl;
+        }
+        printNoti();
+    } while (categoryChoice != 6);
 }
 // Chức năng quản lý tác giả
 void addNewAuthor(Library& library) {
@@ -150,24 +238,24 @@ void manageAuthors(Library& library) {
 }
 // Chức năng quản lý sách
 void addNewBook(Library& library) {
-    string title, author, category;
+    string title, authorID, categoryID;
     int year, pages, totalCopies;
     cout << "Nhap tieu de sach: ";
     cin.ignore();
     getline(cin, title);
     cout << "Nhap ID tac gia: ";
-    getline(cin, author);
-    cout << "Nhap the loai: ";
-    getline(cin, category);
+    getline(cin, authorID);
+    cout << "Nhap ID the loai: ";
+    getline(cin, categoryID);
     cout << "Nhap nam xuat ban: ";
     cin >> year;
     cout << "Nhap so trang: ";
     cin >> pages;
     cout << "Nhap tong so ban sao: ";
     cin >> totalCopies;
-    Book* newBook = library.createNewBook(title, author, category, year, pages, totalCopies);
+    Book* newBook = library.createNewBook(title, authorID, categoryID, year, pages, totalCopies);
     if (newBook == nullptr) {
-        cout << "Khong ton tai tac gia co id da nhap!" << endl;
+        cout << "Khong the tao boi vi tac gia hoac the loai khong ton tai!" << endl;
         return;
     }
     int addChoice;
@@ -375,6 +463,7 @@ void manageTransactions(Library& library) {
 // Hàm chính
 int main() {
     Library library;
+    library.loadCategorys();
     library.loadAuthors();
     library.loadBooks();
     library.loadReaders();
@@ -404,10 +493,14 @@ int main() {
                 break;
             case 4:
                 manageAuthors(library);
+                break;
             case 5:
-                cout << "Chuc nang thong ke dang duoc phat trien...\n";
+                manageCategorys(library);
                 break;
             case 6:
+                cout << "Chuc nang thong ke dang duoc phat trien...\n";
+                break;
+            case 0:
                 cout << "Thoat chuong trinh...\n";
                 break;
             default: {
