@@ -20,17 +20,16 @@ private:
     /*0 is Unreturned
       1 is Returned
     */
-    Transaction* next;
 
 public:
-    static string generateID() {
+    string generateID() {
         return "T" + toString(countTransaction++); 
     }
-    Transaction() : next(nullptr) {}
+    Transaction() {}
     Transaction(string ReaderID, string BookID, Date BorrowDate): 
-        id(generateID()),readerID(ReaderID), bookID(BookID), borrowDate(BorrowDate), status(0), next(nullptr) {}
-    Transaction(string TransactionID, string ReaderID, string BookID, Date BorrowDate): 
-        id(TransactionID),readerID(ReaderID), bookID(BookID), borrowDate(BorrowDate), status(0), next(nullptr) {
+        id(generateID()),readerID(ReaderID), bookID(BookID), borrowDate(BorrowDate), status(0) {}
+    Transaction(string TransactionID, string ReaderID, string BookID, Date BorrowDate, bool Status = 0): 
+        id(TransactionID),readerID(ReaderID), bookID(BookID), borrowDate(BorrowDate), status(Status) {
             if (countTransaction <= toInt(TransactionID, 1)) countTransaction = toInt(TransactionID, 1) + 1;
         }
     string getId() const {return id;}
@@ -39,13 +38,11 @@ public:
     Date getBorrowDate() const {return borrowDate;}
     Date getReturnDate() const {return returnDate;}
     bool getStatus() const {return status;}
-    Transaction* getNext() const {return next;}
 
     void setReturnDate(const Date& newReturnDate) {returnDate = newReturnDate;}
     void setStatus(const bool& newStatus) {status = newStatus;}
-    void setNext(Element* newNext) {next = static_cast<Transaction*> (newNext);}
 
-    void printTable() {
+    void printTable() const{
 		 cout << left << setw(5) << "ID"
          << setw(15) << "Reader ID"
          << setw(15) << "Book ID"

@@ -65,6 +65,43 @@ void displayTransactionMenu() {
     cout << "5. Quay lai menu chinh\n";
 }
 // Chức năng quản lý tác giả
+void addNewAuthor(Library& library) {
+    string name;
+    bool gender;
+    int bornYear;
+    cout << "Nhap ten tac gia: ";
+    cin.ignore();
+    getline(cin, name);
+    cout << "Nhap gioi tinh (0: Nu, 1: Nam): ";
+    cin >> gender;
+    cout << "Nhap nam sinh: ";
+    cin.ignore();
+    cin >> bornYear;
+    Author* newAuthor = new Author(name, gender, bornYear);
+    int addChoice;
+    cout << "1. Them vao dau danh sach\n";
+    cout << "2. Them vao cuoi danh sach\n";
+    cout << "3. Them theo chi so\n";
+    cout << "Nhap lua chon cua ban: ";
+    cin >> addChoice;
+    switch (addChoice) {
+        case 1:
+            library.addAuthorAtHead(newAuthor);
+            break;
+        case 2:
+            library.addAuthorAtEnd(newAuthor);
+            break;
+        case 3: {
+            int index;
+            cout << "Nhap chi so de them tac gia: ";
+            cin >> index;
+            library.addAuthorAtIndex(index, newAuthor);
+            break;
+        }
+        default:
+            cout << "Lua chon khong hop le." << endl;
+    }
+}
 void manageAuthors(Library& library) {
     int authorChoice;
     do {
@@ -92,46 +129,7 @@ void manageAuthors(Library& library) {
                 break;
             }
             case 4: {
-                string name;
-                bool gender;
-                int bornYear;
-                cout << "Nhap ten tac gia: ";
-                cin.ignore();
-                getline(cin, name);
-                cout << "Nhap gioi tinh (0: Nu, 1: Nam): ";
-                cin >> gender;
-                cout << "Nhap nam sinh: ";
-                cin.ignore();
-                cin >> bornYear;
-                Author* newAuthor = new Author(name, gender, bornYear);
-
-                int addChoice;
-                cout << "1. Them vao dau danh sach\n";
-                cout << "2. Them vao cuoi danh sach\n";
-                cout << "3. Them theo chi so\n";
-                cout << "Nhap lua chon cua ban: ";
-                cin >> addChoice;
-
-                switch (addChoice) {
-                    case 1:
-                        library.addAuthorAtHead(newAuthor);
-                        cout << "Tac gia da duoc them vao dau danh sach." << endl;
-                        break;
-                    case 2:
-                        library.addAuthorAtEnd(newAuthor);
-                        cout << "Tac gia da duoc them vao cuoi danh sach." << endl;
-                        break;
-                    case 3: {
-                        int index;
-                        cout << "Nhap chi so de them tac gia: ";
-                        cin >> index;
-                        library.addAuthorAtIndex(index, newAuthor);
-                        cout << "tac gia da duoc them vao chi so " << index << "." << endl;
-                        break;
-                    }
-                    default:
-                        cout << "Lua chon khong hop le." << endl;
-                }
+                addNewAuthor(library);
                 break;
             }
             case 5: {
@@ -151,6 +149,51 @@ void manageAuthors(Library& library) {
     } while (authorChoice != 6);
 }
 // Chức năng quản lý sách
+void addNewBook(Library& library) {
+    string title, author, category;
+    int year, pages, totalCopies;
+    cout << "Nhap tieu de sach: ";
+    cin.ignore();
+    getline(cin, title);
+    cout << "Nhap ID tac gia: ";
+    getline(cin, author);
+    cout << "Nhap the loai: ";
+    getline(cin, category);
+    cout << "Nhap nam xuat ban: ";
+    cin >> year;
+    cout << "Nhap so trang: ";
+    cin >> pages;
+    cout << "Nhap tong so ban sao: ";
+    cin >> totalCopies;
+    Book* newBook = library.createNewBook(title, author, category, year, pages, totalCopies);
+    if (newBook == nullptr) {
+        cout << "Khong ton tai tac gia co id da nhap!" << endl;
+        return;
+    }
+    int addChoice;
+    cout << "1. Them vao dau danh sach\n";
+    cout << "2. Them vao cuoi danh sach\n";
+    cout << "3. Them theo chi so\n";
+    cout << "Nhap lua chon cua ban: ";
+    cin >> addChoice;
+    switch (addChoice) {
+        case 1:
+            library.addBookAtHead(newBook);
+            break;
+        case 2:
+            library.addBookAtEnd(newBook);
+            break;
+        case 3: {
+            int index;
+            cout << "Nhap chi so de them sach: ";
+            cin >> index;
+            library.addBookAtIndex(index, newBook);
+            break;
+        }
+        default:
+            cout << "Lua chon khong hop le." << endl;
+    }
+}
 void manageBooks(Library& library) {
     int bookChoice;
     do {
@@ -178,59 +221,7 @@ void manageBooks(Library& library) {
                 break;
             }
             case 4: {
-                string title, author, category;
-                int year, pages, totalCopies;
-
-                cout << "Nhap tieu de sach: ";
-                cin.ignore();
-                getline(cin, title);
-
-                cout << "Nhap ID tac gia: ";
-                getline(cin, author);
-
-                cout << "Nhap the loai: ";
-                getline(cin, category);
-
-                cout << "Nhap nam xuat ban: ";
-                cin >> year;
-
-                cout << "Nhap so trang: ";
-                cin >> pages;
-
-                cout << "Nhap tong so ban sao: ";
-                cin >> totalCopies;
-
-                Book* newBook = library.createNewBook(title, author, category, year, pages, totalCopies);
-                if (newBook == nullptr) {
-                    cout << "Khong ton tai tac gia co id da nhap!" << endl;
-                }
-                int addChoice;
-                cout << "1. Them vao dau danh sach\n";
-                cout << "2. Them vao cuoi danh sach\n";
-                cout << "3. Them theo chi so\n";
-                cout << "Nhap lua chon cua ban: ";
-                cin >> addChoice;
-
-                switch (addChoice) {
-                    case 1:
-                        library.addBookAtHead(newBook);
-                        cout << "Sach da duoc them vao dau danh sach." << endl;
-                        break;
-                    case 2:
-                        library.addBookAtEnd(newBook);
-                        cout << "Sach da duoc them vao cuoi danh sach." << endl;
-                        break;
-                    case 3: {
-                        int index;
-                        cout << "Nhap chi so de them sach: ";
-                        cin >> index;
-                        library.addBookAtIndex(index, newBook);
-                        cout << "Sach da duoc them vao chi so " << index << "." << endl;
-                        break;
-                    }
-                    default:
-                        cout << "Lua chon khong hop le." << endl;
-                }
+                addNewBook(library);
                 break;
             }
             case 5: {
@@ -250,6 +241,48 @@ void manageBooks(Library& library) {
     } while (bookChoice != 6);
 }
 // Chức năng quản lý độc giả
+void addNewReader(Library& library) {
+    string name, className, address, phone;
+    bool gender;
+    cout << "Nhap ten doc gia: ";
+    cin.ignore();
+    getline(cin, name);
+    cout << "Nhap gioi tinh (0: Nu, 1: Nam): ";
+    cin >> gender;
+    cout << "Nhap lop: ";
+    cin.ignore();
+    getline(cin, className);
+    cout << "Nhap dia chi: ";
+    getline(cin, address);
+    cout << "Nhap so dien thoai: ";
+    getline(cin, phone);
+    Reader* newReader = new Reader(name, gender, className, address, phone);
+
+    int addChoice;
+    cout << "1. Them vao dau danh sach\n";
+    cout << "2. Them vao cuoi danh sach\n";
+    cout << "3. Them theo chi so\n";
+    cout << "Nhap lua chon cua ban: ";
+    cin >> addChoice;
+
+    switch (addChoice) {
+        case 1:
+            library.addReaderAtHead(newReader);
+            break;
+        case 2:
+            library.addReaderAtEnd(newReader);
+            break;
+        case 3: {
+            int index;
+            cout << "Nhap chi so de them doc gia: ";
+            cin >> index;
+            library.addReaderAtIndex(index, newReader);
+            break;
+        }
+        default:
+            cout << "Lua chon khong hop le." << endl;
+    }
+}
 void manageReaders(Library& library) {
     int readerChoice;
     do {
@@ -277,49 +310,7 @@ void manageReaders(Library& library) {
                 break;
             }
             case 4: {
-                string name, className, address, phone;
-                bool gender;
-                cout << "Nhap ten doc gia: ";
-                cin.ignore();
-                getline(cin, name);
-                cout << "Nhap gioi tinh (0: Nu, 1: Nam): ";
-                cin >> gender;
-                cout << "Nhap lop: ";
-                cin.ignore();
-                getline(cin, className);
-                cout << "Nhap dia chi: ";
-                getline(cin, address);
-                cout << "Nhap so dien thoai: ";
-                getline(cin, phone);
-                Reader* newReader = new Reader(name, gender, className, address, phone);
-
-                int addChoice;
-                cout << "1. Them vao dau danh sach\n";
-                cout << "2. Them vao cuoi danh sach\n";
-                cout << "3. Them theo chi so\n";
-                cout << "Nhap lua chon cua ban: ";
-                cin >> addChoice;
-
-                switch (addChoice) {
-                    case 1:
-                        library.addReaderAtHead(newReader);
-                        cout << "Nguoi doc da duoc them vao dau danh sach." << endl;
-                        break;
-                    case 2:
-                        library.addReaderAtEnd(newReader);
-                        cout << "Nguoi doc da duoc them vao cuoi danh sach." << endl;
-                        break;
-                    case 3: {
-                        int index;
-                        cout << "Nhap chi so de them doc gia: ";
-                        cin >> index;
-                        library.addReaderAtIndex(index, newReader);
-                        cout << "Nguoi doc da duoc them vao chi so " << index << "." << endl;
-                        break;
-                    }
-                    default:
-                        cout << "Lua chon khong hop le." << endl;
-                }
+                addNewReader(library);
                 break;
             }
             case 5: {
@@ -401,7 +392,6 @@ int main() {
             cout << "Vui long nhap mot so nguyen: ";
             cin >> choice;
         }
-        printNoti();
         switch (choice) {
             case 1:
                 manageBooks(library);
@@ -420,10 +410,11 @@ int main() {
             case 6:
                 cout << "Thoat chuong trinh...\n";
                 break;
-            default:
+            default: {
                 cout << "Lua chon khong hop le." << endl;
+                printNoti();
+            }
         }
-        // printNoti();
     } while (choice != 6);
 
     return 0;

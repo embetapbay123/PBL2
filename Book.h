@@ -18,33 +18,35 @@ private:
     int pages;
     int totalCopies;
     int availableCopies;
-    Book* next; 
-
 public:
-    static string generateID() {
+    string generateID() {
         return "B" + toString(countBook++); 
     }
-    Book() : year(0), pages(0), totalCopies(0), availableCopies(0), next(nullptr) {}
+    Book() : year(0), pages(0), totalCopies(0), availableCopies(0){}
     Book(string bookID, string title, Author* AuthorPtr, string Category, int Year, int Pages, int TotalCopies) : 
         Element(bookID, title), authorPtr(AuthorPtr), category(Category), year(Year), pages(Pages), 
-            totalCopies(TotalCopies), availableCopies(TotalCopies), next(nullptr) {
+            totalCopies(TotalCopies), availableCopies(TotalCopies) {
                  if (countBook <= toInt(bookID, 1)) countBook = toInt(bookID, 1) + 1;
             }
     Book(string title, Author* AuthorPtr, string Category, int Year, int Pages, int TotalCopies) : 
         Element(generateID(), title), authorPtr(AuthorPtr), category(Category), year(Year), pages(Pages),
-            totalCopies(TotalCopies), availableCopies(TotalCopies), next(nullptr) {}
+            totalCopies(TotalCopies), availableCopies(TotalCopies) {}
+    ~Book() {
+        if (authorPtr != nullptr) authorPtr->decresingBookCount();
+        cout << "DA HUY" << endl;
+    }
     Author* getAuthorPtr() const {return authorPtr;}
     string getAuthorID() const {return authorPtr->getId();}
 	int getYear() const {return year;}
 	int getPages() const {return pages;}
 	int getTotalCopies() const {return totalCopies;}
     int getAvailableCopies() const {return availableCopies;}
-    Book* getNext() const {
-    	return (next); 
-	}
+    bool isAvailabletoDelete() const{
+        return totalCopies == availableCopies;
+    }
     void borrowBook();
     void returnBook();
-    virtual void printTable() {
+    void printTable() const{
 		cout << left << setw(5) << "ID"
          << setw(35) << "Tieu de"
          << setw(20) << "Tac gia"
@@ -79,7 +81,6 @@ public:
         totalCopies = newTotalCopies;
         availableCopies = newTotalCopies;
     }
-    void setNext(Element* newElement) {(next) = static_cast<Book*>(newElement);}
 };
 
 // Implementation of Book class

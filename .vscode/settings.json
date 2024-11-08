@@ -60,6 +60,23 @@
     "iostream": "cpp",
     "iomanip": "cpp",
     "ostream": "cpp",
-    "*.txt": "plaintext"
+    "*.txt": "plaintext",
+    "array": "cpp",
+    "*.tcc": "cpp",
+    "string": "cpp",
+    "unordered_map": "cpp",
+    "memory": "cpp",
+    "optional": "cpp",
+    "string_view": "cpp",
+    "fstream": "cpp",
+    "istream": "cpp",
+    "shared_mutex": "cpp",
+    "sstream": "cpp",
+    "stop_token": "cpp",
+    "streambuf": "cpp",
+    "thread": "cpp",
+    "functional": "cpp",
+    "tuple": "cpp",
+    "variant": "cpp"
   }
 }

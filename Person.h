@@ -18,6 +18,9 @@ public:
     : Element(personID, Name), gender(Gender), bookCount(0) {}
     bool getGender() const {return gender;}
     int getbookCount() const {return bookCount;}
+    bool isAvailabletoDelete() const{
+        return bookCount == 0;
+    }
     void setGender(const bool& newGender) {
         gender = newGender;
     }
@@ -30,7 +33,5 @@ public:
     void decresingBookCount () {
         bookCount--;
     }
-    // void create
 };
-
 #endif

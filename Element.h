@@ -69,17 +69,16 @@ public :
     Element(const string& ID, const string& Name) : id(ID), name(Name) {}
 	string getId() const {return id;}
     string getName() const {return name;}
-    virtual void setNext(Element* newElement) = 0;
     void setId(const string& newId) {
        	id = newId;
     }
 	void setName(const string& newName) {
 	   	name = newName;
 	}
-	virtual void printTable() = 0; 
-	static string generateID();
+    virtual bool isAvailabletoDelete() const {return 0;}
+	virtual void printTable() const = 0; 
+	virtual string generateID() = 0;
     virtual void printInfo() const = 0;  
-    virtual Element* getNext() const = 0;
 };
 
 #endif

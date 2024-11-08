@@ -16,25 +16,26 @@ private:
     string className;
     string address;
     string phoneNumber;
-    Reader* next; 
 public:
-    static string generateID() {
+    string generateID() {
         return "R" + toString(countReader++); 
     }
-    Reader() : next(nullptr) {}
+    Reader() {}
     Reader(string ReaderID,string Name, bool Gender, string ClassName, string Address, string PhoneNumber)
-    : Person(ReaderID, Name, Gender), className(ClassName), address(Address), phoneNumber(PhoneNumber), next(nullptr) {
+    : Person(ReaderID, Name, Gender), className(ClassName), address(Address), phoneNumber(PhoneNumber) {
         if (countReader <= toInt(ReaderID, 1)) countReader = toInt(ReaderID, 1) + 1;
     }
     Reader(string Name, bool Gender, string ClassName, string Address, string PhoneNumber)
-    : Person(generateID(), Name, Gender), className(ClassName), address(Address), phoneNumber(PhoneNumber), next(nullptr) {}
+    : Person(generateID(), Name, Gender), className(ClassName), address(Address), phoneNumber(PhoneNumber) {}
     string getClassName() const {return className;}
     string getAddress() const {return address;}
     string getPhoneNumber() const {return phoneNumber;}
-    Reader* getNext() const {return (next);}
+    bool isAvailabletoBorrow() const{
+        return bookCount != MAX_BORROWED_BOOKS;
+    }
     void borrowBook();
     void returnBook();
-    virtual void printTable() {
+    void printTable() const{
 		 cout << left << setw(5) << "ID"
          << setw(30) << "Ten"
          << setw(10) << "Gioi tinh"
@@ -62,9 +63,6 @@ public:
     void setPhoneNumber(const string& newPhoneNumber) {
         phoneNumber = newPhoneNumber;
     }
-    void setNext(Element* newElement) {
-    	next = static_cast<Reader*> (newElement);
-	}
 };
 
 // Implementation of Reader class
