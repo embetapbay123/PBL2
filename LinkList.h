@@ -80,7 +80,6 @@ public:
             newNode->prev = current;  
             size++;
         }
-        cout << "Them thanh cong!" << endl;
     }
 
     void clear() {
@@ -113,6 +112,22 @@ public:
             current->data->printInfo();
             current = current->next;
         }
+    }
+
+    void printIf(bool (*check) (Element* e)) const {
+        bool found = 0;
+        Node* current = head;
+        while (current) {
+            if (check(current->data)) {
+                if (!found) {
+                    found = true;
+                    current->data->printTable();
+                }
+                current->data->printInfo();
+            }
+            current = current->next;
+        }
+        if (!found) throw 0; // Khong tim thay
     }
 
     void printbyName(const string& name) const {

@@ -3,6 +3,7 @@
 
 #include "Reader.h"
 #include "Date.h"
+#include "iomanip"
 
 using namespace std;
 
@@ -59,11 +60,11 @@ public:
          << setw(30) << (status ? returnDate.info() : "NULL")
          << setw(15) << (status ? "Da tra" : "Chua tra") << endl;
     }
-    bool isOverdue() const;
+    bool isOverMonth() const;
 };
 
 // Implementation of Transaction class
-bool Transaction::isOverdue() const {
+bool Transaction::isOverMonth() const {
     time_t now = time(0);
     int daysDiff = borrowDate.diff(Date(now));
     return daysDiff >= 30;
@@ -71,5 +72,13 @@ bool Transaction::isOverdue() const {
 
 int Transaction::countTransaction = 1;
 
+bool CheckOverDue(Element* e) {
+    Transaction* transactionPtr = dynamic_cast<Transaction*> (e);
+    return transactionPtr->isOverMonth() && transactionPtr->getStatus() == 0;
+}
+bool CheckInMonth(Element* e) {
+    Transaction* transactionPtr = dynamic_cast<Transaction*> (e);
+    return !transactionPtr->isOverMonth();
+}
 #endif
 

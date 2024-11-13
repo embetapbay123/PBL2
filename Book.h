@@ -36,7 +36,6 @@ public:
     ~Book() {
         if (authorPtr != nullptr) authorPtr->decresingBookCount();
         if (categoryPtr != nullptr) categoryPtr->decresingBookCount();
-        // cout << "DA HUY" << endl;
     }
     Author* getAuthorPtr() const {return authorPtr;}
     string getAuthorID() const {return authorPtr->getId();}
@@ -52,14 +51,17 @@ public:
     void borrowBook();
     void returnBook();
     void printTable() const{
+        setColor(31);
 		cout << left << setw(5) << "ID"
          << setw(35) << "Tieu de"
          << setw(20) << "Tac gia"
          << setw(15) << "The loai"
          << setw(5) << "Nam"
          << setw(10) << "Trang"
-         << setw(15) << "Sach hien co/Toan bo" << endl;
+         << setw(15) << "Sach hien co"
+         << "Toan bo" << endl;
     	cout << "-----------------------------------------------------------------------------------------------------------------------" << endl;
+        resetColor();
 	}
 	void printInfo() const {
     	cout << left << setw(5) << id

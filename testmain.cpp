@@ -3,91 +3,97 @@
 #include "Book.h"
 #include "Reader.h"
 #include "Transaction.h"
-#include "limits"
 #include "LM.h"
+#include "dohoa.h"
 using namespace std;
 
-void printNoti() {
-    cout << "Press Enter to continue... ";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Xóa bỏ bộ đệm cũ
-    cin.get();
+int displayAddMenu() {
+    string menu[] = {
+        "1. Them vao dau",
+        "2. Them vao cuoi",
+        "3. Them theo chi so"
+    };
+    return printMenu(menu, 3, "ADD MENU");
+}
+// Hiển thị menu chính
+int displayMainMenu() {
+    string menuu[] = {
+        "1. Quan ly Sach", 
+        "2. Quan ly Doc gia", 
+        "3. Quan ly Giao dich", 
+        "4. Quan ly Tac gia", 
+        "5. Quan ly The loai", 
+        "6. Thong ke",
+        "7. Thoat"
+    };
+    return printMenu(menuu, 7, "QUAN LY THU VIEN");
+    return 0;
+}
+int displayCategoryMenu() {
+    string menu[] = {
+        "1. Danh sach the loai", 
+        "2. Tim kiem the loai", 
+        "3. Tra cuu the loai", 
+        "4. Them moi the loai", 
+        "5. Xoa the loai", 
+        "6. Quay lai menu chinh"
+    };
+    return printMenu(menu, 6, "QUAN LY THE LOAI");
 }
 
-// Hiển thị menu chính
-void displayMainMenu() {
-    cout << "\n=========================================\n";
-    cout << "=== QUAN LY THU VIEN ===\n";
-    cout << "1. Quan ly Sach\n";
-    cout << "2. Quan ly Doc gia\n";
-    cout << "3. Quan ly Giao dich\n";
-    cout << "4. Quan ly Tac gia\n";
-    cout << "5. Quan ly The loai\n";
-    cout << "6. Thong ke, sap  xep\n";
-    cout << "0. Thoat\n";
-    cout << "=========================================\n";
+int displayAuthorMenu() {
+    string menu[] = {
+        "1. Danh sach tac gia", 
+        "2. Tim kiem tac gia", 
+        "3. Tra cuu tac gia", 
+        "4. Them moi tac gia", 
+        "5. Xoa tac gia", 
+        "6. Quay lai menu chinh"
+    };
+    return printMenu(menu, 6, "QUAN LY TAC GIA");
 }
-// Hiển thị menu quản lý thể loại
-void displayCategoryMenu() {
-    cout << "\n=== QUAN LY THE LOAI ===\n";
-    cout << "1. Danh sach the loai\n";
-    cout << "2. Tim kiem the loai theo ten\n";
-    cout << "3. Tra cuu thong tin the loai theo ID\n";
-    cout << "4. Them moi the loai\n";
-    cout << "5. Xoa the loai\n";
-    cout << "6. Quay lai menu chinh\n";
+
+int displayBookMenu() {
+    string menu[] = {
+        "1. Danh sach sach", 
+        "2. Tim kiem sach", 
+        "3. Tra cuu sach", 
+        "4. Them moi sach", 
+        "5. Xoa sach", 
+        "6. Quay lai menu chinh"
+    };
+    return printMenu(menu, 6, "QUAN LY SACH");
 }
-// Hiển thị menu quản lý tác giả
-void displayAuthorMenu() {
-    cout << "\n=== QUAN LY TAC GIA ===\n";
-    cout << "1. Danh sach tac gia\n";
-    cout << "2. Tim kiem tac gia theo ten\n";
-    cout << "3. Tra cuu thong tin tac gia theo ID\n";
-    cout << "4. Them moi tac gia\n";
-    cout << "5. Xoa tac gia\n";
-    cout << "6. Quay lai menu chinh\n";
+
+int displayReaderMenu() {
+    string menu[] = {
+        "1. Danh sach doc gia", 
+        "2. Tim kiem doc gia", 
+        "3. Tra cuu doc gia", 
+        "4. Them moi doc gia", 
+        "5. Xoa doc gia", 
+        "6. Quay lai menu chinh"
+    };
+    return printMenu(menu, 6, "QUAN LY DOC GIA");
 }
-// Hiển thị menu quản lý sách
-void displayBookMenu() {
-    cout << "\n=== QUAN LY SACH ===\n";
-    cout << "1. Danh sach sach\n";
-    cout << "2. Tim kiem sach theo ten\n";
-    cout << "3. Tra cuu thong tin sach theo ID\n";
-    cout << "4. Them moi sach\n";
-    cout << "5. Xoa sach\n";
-    cout << "6. Quay lai menu chinh\n";
+
+int displayTransactionMenu() {
+    string menu[] = {
+        "1. Muon sach", 
+        "2. Tra sach", 
+        "3. Danh sach giao dich", 
+        "4. Giao dich qua han",
+        "5. Giao dich trong thang", 
+        "6. Quay lai menu chinh"
+    };
+    return printMenu(menu, 6, "QUAN LY GIAO DICH");
 }
-// Hiển thị menu quản lý độc giả
-void displayReaderMenu() {
-    cout << "\n=== QUAN LY DOC GIA ===\n";
-    cout << "1. Danh sach doc gia\n";
-    cout << "2. Tim kiem doc gia theo ten\n";
-    cout << "3. Tra cuu thong tin doc gia theo ID\n";
-    cout << "4. Them moi doc gia\n";
-    cout << "5. Xoa doc gia\n";
-    cout << "6. Quay lai menu chinh\n";
-}
-// Hiển thị menu quản lý giao dịch
-void displayTransactionMenu() {
-    cout << "\n=== QUAN LY GIAO DICH ===\n";
-    cout << "1. Muon sach\n";
-    cout << "2. Tra sach\n";
-    cout << "3. Danh sach giao dich\n";
-    cout << "4. Giao dich qua han\n";
-    cout << "5. Quay lai menu chinh\n";
-}
-// Chức năng quản lý thể loại
 void addNewCategory(Library& library) {
     string name;
     cout << "Nhap ten the loai: ";
-    cin.ignore();
     getline(cin, name);
     Category* newCategory = new Category(name);
-    int addChoice;
-    cout << "1. Them vao dau danh sach\n";
-    cout << "2. Them vao cuoi danh sach\n";
-    cout << "3. Them theo chi so\n";
-    cout << "Nhap lua chon cua ban: ";
-    cin >> addChoice;
+    int addChoice = displayAddMenu() + 1;
     switch (addChoice) {
         case 1:
             library.addCategoryAtHead(newCategory);
@@ -109,10 +115,8 @@ void addNewCategory(Library& library) {
 void manageCategorys(Library& library) {
     int categoryChoice;
     do {
-        displayCategoryMenu();
-        cout << "Nhap lua chon cua ban: ";
-        cin >> categoryChoice;
-
+        categoryChoice = displayCategoryMenu() + 1;
+        system("cls");
         switch (categoryChoice) {
             case 1:
                 library.listCategorys();
@@ -120,7 +124,6 @@ void manageCategorys(Library& library) {
             case 2: {
                 string name;
                 cout << "Nhap ten the loai: ";
-                cin.ignore();
                 getline(cin, name);
                 library.searchCategoryByName(name);
                 break;
@@ -144,34 +147,26 @@ void manageCategorys(Library& library) {
                 break;
             }
             case 6:
-                cout << "Tro lai menu chinh...\n";
                 break;
             default:
                 cout << "Lua chon khong hop le." << endl;
         }
         printNoti();
+        system("cls");
     } while (categoryChoice != 6);
 }
-// Chức năng quản lý tác giả
 void addNewAuthor(Library& library) {
     string name;
     bool gender;
     int bornYear;
     cout << "Nhap ten tac gia: ";
-    cin.ignore();
     getline(cin, name);
     cout << "Nhap gioi tinh (0: Nu, 1: Nam): ";
     cin >> gender;
     cout << "Nhap nam sinh: ";
-    cin.ignore();
     cin >> bornYear;
     Author* newAuthor = new Author(name, gender, bornYear);
-    int addChoice;
-    cout << "1. Them vao dau danh sach\n";
-    cout << "2. Them vao cuoi danh sach\n";
-    cout << "3. Them theo chi so\n";
-    cout << "Nhap lua chon cua ban: ";
-    cin >> addChoice;
+    int addChoice = displayAddMenu() + 1;
     switch (addChoice) {
         case 1:
             library.addAuthorAtHead(newAuthor);
@@ -193,10 +188,8 @@ void addNewAuthor(Library& library) {
 void manageAuthors(Library& library) {
     int authorChoice;
     do {
-        displayAuthorMenu();
-        cout << "Nhap lua chon cua ban: ";
-        cin >> authorChoice;
-
+        authorChoice = displayAuthorMenu() + 1;
+        system("cls");
         switch (authorChoice) {
             case 1:
                 library.listAuthors();
@@ -204,7 +197,7 @@ void manageAuthors(Library& library) {
             case 2: {
                 string name;
                 cout << "Nhap ten tac gia: ";
-                cin.ignore();
+                // cin.ignore();
                 getline(cin, name);
                 library.searchAuthorByName(name);
                 break;
@@ -228,7 +221,6 @@ void manageAuthors(Library& library) {
                 break;
             }
             case 6:
-                cout << "Tro lai menu chinh...\n";
                 break;
             default:
                 cout << "Lua chon khong hop le." << endl;
@@ -241,7 +233,6 @@ void addNewBook(Library& library) {
     string title, authorID, categoryID;
     int year, pages, totalCopies;
     cout << "Nhap tieu de sach: ";
-    cin.ignore();
     getline(cin, title);
     cout << "Nhap ID tac gia: ";
     getline(cin, authorID);
@@ -258,12 +249,8 @@ void addNewBook(Library& library) {
         cout << "Khong the tao boi vi tac gia hoac the loai khong ton tai!" << endl;
         return;
     }
-    int addChoice;
-    cout << "1. Them vao dau danh sach\n";
-    cout << "2. Them vao cuoi danh sach\n";
-    cout << "3. Them theo chi so\n";
-    cout << "Nhap lua chon cua ban: ";
-    cin >> addChoice;
+    int addChoice = displayAddMenu() + 1;
+    system("cls");
     switch (addChoice) {
         case 1:
             library.addBookAtHead(newBook);
@@ -285,10 +272,8 @@ void addNewBook(Library& library) {
 void manageBooks(Library& library) {
     int bookChoice;
     do {
-        displayBookMenu();
-        cout << "Nhap lua chon cua ban: ";
-        cin >> bookChoice;
-
+        bookChoice = displayBookMenu() + 1;
+        system("cls");
         switch (bookChoice) {
             case 1:
                 library.listBooks();
@@ -296,7 +281,7 @@ void manageBooks(Library& library) {
             case 2: {
                 string title;
                 cout << "Nhap ten sach: ";
-                cin.ignore();
+                // cin.ignore();
                 getline(cin, title);
                 library.searchBookByTitle(title);
                 break;
@@ -315,12 +300,12 @@ void manageBooks(Library& library) {
             case 5: {
                 string bookID;
                 cout << "Nhap ID sach: ";
-                cin >> bookID;
+                // cin.ignore();
+                getline(cin, bookID);
                 library.deleteBook(bookID);
                 break;
             }
             case 6:
-                cout << "Tro lai menu chinh...\n";
                 break;
             default:
                 cout << "Lua chon khong hop le." << endl;
@@ -333,26 +318,18 @@ void addNewReader(Library& library) {
     string name, className, address, phone;
     bool gender;
     cout << "Nhap ten doc gia: ";
-    cin.ignore();
+    // cin.ignore();
     getline(cin, name);
     cout << "Nhap gioi tinh (0: Nu, 1: Nam): ";
     cin >> gender;
     cout << "Nhap lop: ";
-    cin.ignore();
     getline(cin, className);
     cout << "Nhap dia chi: ";
     getline(cin, address);
     cout << "Nhap so dien thoai: ";
     getline(cin, phone);
     Reader* newReader = new Reader(name, gender, className, address, phone);
-
-    int addChoice;
-    cout << "1. Them vao dau danh sach\n";
-    cout << "2. Them vao cuoi danh sach\n";
-    cout << "3. Them theo chi so\n";
-    cout << "Nhap lua chon cua ban: ";
-    cin >> addChoice;
-
+    int addChoice = displayAddMenu() + 1;
     switch (addChoice) {
         case 1:
             library.addReaderAtHead(newReader);
@@ -374,10 +351,8 @@ void addNewReader(Library& library) {
 void manageReaders(Library& library) {
     int readerChoice;
     do {
-        displayReaderMenu();
-        cout << "Nhap lua chon cua ban: ";
-        cin >> readerChoice;
-
+        readerChoice = displayReaderMenu() + 1;
+        system("cls");
         switch (readerChoice) {
             case 1:
                 library.listReaders();
@@ -385,7 +360,6 @@ void manageReaders(Library& library) {
             case 2: {
                 string name;
                 cout << "Nhap ten doc gia: ";
-                cin.ignore();
                 getline(cin, name);
                 library.searchReaderByName(name);
                 break;
@@ -409,7 +383,6 @@ void manageReaders(Library& library) {
                 break;
             }
             case 6:
-                cout << "Tro lai menu chinh...\n";
                 break;
             default:
                 cout << "Lua chon khong hop le." << endl;
@@ -421,10 +394,8 @@ void manageReaders(Library& library) {
 void manageTransactions(Library& library) {
     int transactionChoice;
     do {
-        displayTransactionMenu();
-        cout << "Nhap lua chon cua ban: ";
-        cin >> transactionChoice;
-
+        transactionChoice = displayTransactionMenu() + 1;
+        system("cls");
         switch (transactionChoice) {
             case 1: {
                 string readerID, bookID;
@@ -448,19 +419,20 @@ void manageTransactions(Library& library) {
                 library.listTransactions();
                 break;
             case 4:
-                library.overdueBooks();
+                library.overdueTransactions();
                 break;
             case 5:
-                cout << "Tro lai menu chinh...\n";
+                library.inMonthTransaction();
+                break;
+            case 6:
                 break;
             default:
                 cout << "Lua chon khong hop le." << endl;
         }
         printNoti();
-    } while (transactionChoice != 5);
+    } while (transactionChoice != 6);
 }
 
-// Hàm chính
 int main() {
     Library library;
     library.loadCategorys();
@@ -468,19 +440,10 @@ int main() {
     library.loadBooks();
     library.loadReaders();
     library.loadTransaction();
-    int choice;
+    int choice = 0;
 
     do {
-        displayMainMenu();
-        cout << "Nhap lua chon cua ban (1-6): ";
-        cin >> choice;
-
-        while (cin.fail()) {
-            cin.clear(); 
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
-            cout << "Vui long nhap mot so nguyen: ";
-            cin >> choice;
-        }
+        choice = displayMainMenu() + 1;
         switch (choice) {
             case 1:
                 manageBooks(library);
@@ -498,9 +461,11 @@ int main() {
                 manageCategorys(library);
                 break;
             case 6:
-                cout << "Chuc nang thong ke dang duoc phat trien...\n";
+                system("cls");
+                library.statistical();
+                system("pause");
                 break;
-            case 0:
+            case 7:
                 cout << "Thoat chuong trinh...\n";
                 break;
             default: {
@@ -508,7 +473,7 @@ int main() {
                 printNoti();
             }
         }
-    } while (choice != 6);
+    } while (choice != 7);
 
     return 0;
 }

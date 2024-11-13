@@ -87,7 +87,16 @@ public:
     void infoCategorybyID(const string& categoryID);
     void infoAuthorbyID(const string& authorID);
 
-    void overdueBooks() const; 
+    void overdueTransactions() const;
+    void inMonthTransaction() const;
+
+    void statistical() const {
+        cout << setw(30) << left << "So sach hien tai: " << bookList.getSize() << endl;
+        cout << setw(30) << left << "So nguoi doc hien tai: " << readerList.getSize() << endl;
+        cout << setw(30) << left << "So giao dich hien tai: " << transactionList.getSize() << endl;
+        cout << setw(30) << left << "So tac gia hien tai: " << authorList.getSize() << endl;
+        cout << setw(30) << left << "So the loai hien tai: " << categoryList.getSize() << endl;
+    }
 };
 
 // Implementation of Library class
@@ -601,21 +610,23 @@ void Library::infoReaderbyID(const string& readerID) {
     }
 }
 
-void Library::overdueBooks() const {
-    Node* current = transactionList.getHead();
-    bool found = 0;
-    while (current != nullptr) {
-        Transaction* transactionPtr = dynamic_cast<Transaction*> (current->data);
-        if (transactionPtr->getStatus() == 0 && transactionPtr->isOverdue()) {
-            if (!found) transactionPtr->printTable();
-            found = true;
-            transactionPtr->printInfo();
-        }
-        current = current->next;
+void Library::overdueTransactions() const {
+    try {
+        transactionList.printIf(CheckOverDue);
     }
-    if (!found) {
-        cout << "Khong co giao dich qua han." << endl;
+    catch (int& bug) {
+        if (bug == 0) cout << "Khong co giao dich qua han." << endl;
+        else cout << "UNKNOW BUG AT overdueTransactions" << endl;
     }
 }
 
+void Library::inMonthTransaction() const {
+    try {
+        transactionList.printIf(CheckInMonth);
+    }
+    catch (int& bug) {
+        if (bug == 0) cout << "Khong co giao dich trong thang." << endl;
+        else cout << "UNKNOW BUG AT inMonthTransaction" << endl;
+    }
+}
 #endif

@@ -25,10 +25,12 @@ public:
         return bookCount == 0;
     }
     void printTable() const {
+        setColor(31);
 		 cout << left << setw(5) << "ID"
          << setw(30) << "Ten the loai"
          << setw(10) << "So sach" << endl;
     	 cout << "--------------------------------------------" << endl;
+        resetColor();
 	}
     void printInfo() const {
     	cout << left << setw(5) << id

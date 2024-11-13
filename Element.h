@@ -3,7 +3,8 @@
 
 #include <iostream>
 #include <string>
-
+#include <windows.h>
+#include "dohoa.h"
 using namespace std;
 
 class Element;
@@ -80,5 +81,4 @@ public :
 	virtual string generateID() = 0;
     virtual void printInfo() const = 0;  
 };
-
 #endif

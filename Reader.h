@@ -36,6 +36,7 @@ public:
     void borrowBook();
     void returnBook();
     void printTable() const{
+        setColor(31);
 		 cout << left << setw(5) << "ID"
          << setw(30) << "Ten"
          << setw(10) << "Gioi tinh"
@@ -44,7 +45,8 @@ public:
          << setw(15) << "SDT"
          << setw(10) << "So sach muon" << endl;
     	 cout << "------------------------------------------------------------------------------------------------------------------------" << endl;
-	}
+        resetColor();
+    }
     void printInfo() const {
     	cout << left << setw(5) << id
          << setw(30) << name

@@ -24,12 +24,14 @@ public:
     : Person(generateID(), Name, Gender), bornYear(BornYear){}
     int getBornYear() {return bornYear;}
     void printTable() const {
+        setColor(31);
 		 cout << left << setw(5) << "ID"
          << setw(30) << "Ten"
          << setw(10) << "Gioi tinh"
          << setw(10) << "Nam sinh"
          << setw(10) << "So sach" << endl;
     	 cout << "---------------------------------------------------" << endl;
+        resetColor();
 	}
     void printInfo() const {
     	cout << left << setw(5) << id
