@@ -80,6 +80,7 @@ public:
             newNode->prev = current;  
             size++;
         }
+        cout << "THEM THANH CONG!" << endl;
     }
 
     void clear() {
@@ -143,15 +144,16 @@ public:
         }
     }
 
-    void sortIncreasing(bool (*compare)(const Element&, const Element&)) {
+    void sort(bool (*compare)(Element*& , Element*&)) {
         if (!head || !head->next) return;
         for (Node* i = head; i != nullptr; i = i->next) {
             for (Node* j = i->next; j != nullptr; j = j->next) {
-                if (!compare(*(i->data), *(j->data))) {
+                if (!compare((i->data), (j->data))) {
                     swap(i->data, j->data);
                 }
             }
         }
+        cout << "Sap xep thanh cong" << endl;
     }
 
     void deleteNode(Node* node) {

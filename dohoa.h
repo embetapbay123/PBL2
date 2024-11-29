@@ -19,15 +19,9 @@ void showCursor() {
 void clearScreen() {
    COORD cursorPosition;	cursorPosition.X = 0;	
    cursorPosition.Y = 0;	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), cursorPosition);
-//    system("cls");
 }
 
 void printNoti() {
-    // cout << "Press any key to continue... ";
-    // if (cin.peek() == '\n') { // Nếu bộ đệm không chứa ký tự '\n'
-    //     cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Loại bỏ tất cả ký tự dư thừa
-    // }
-    // cin.get(); 
     system("pause");
 }
 
@@ -39,9 +33,7 @@ void resetColor() {
     cout << "\033[0m";
 }
 
-// Hàm vẽ khung với đường viền liền mạch
 void drawBox(const string& text, bool selected, int out = 25) {
-    // Chọn màu dựa vào trạng thái được chọn hay không
     if (selected) {
         setColor(31); // Màu đỏ cho lựa chọn hiện tại (mã màu ANSI cho màu đỏ)
     } else {

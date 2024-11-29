@@ -27,10 +27,16 @@ public:
     void loadBooks(); // Doc du lieu tu file books.txt va them vao linklist cua book
     void loadReaders(); // Doc du lieu tu file readers.txt va them vao linklist cua reader
     void loadTransaction(); // Doc du lieu tu file transactions.txt va them vao linklist cua transaction
+    
+    void writeCategorys(); 
+    void writeAuthors(); 
+    void writeBooks(); 
+    void writeReaders(); 
+    void writeTransaction(); 
     Book* createNewBook(string title, string authorID, string categoryID, int year, int pages, int totalCopies) {
         Author* authorPtr = findAuthorbyID(authorID);
         Category* categoryPtr = findCategorybyID(categoryID);
-        if (authorPtr == nullptr) return nullptr;
+        if (authorPtr == nullptr || categoryPtr == nullptr) return nullptr;
 	    Book* newBook = new Book(title, authorPtr, categoryPtr, year, pages, totalCopies);
 	    return newBook;
 	}
@@ -92,10 +98,56 @@ public:
 
     void statistical() const {
         cout << setw(30) << left << "So sach hien tai: " << bookList.getSize() << endl;
-        cout << setw(30) << left << "So nguoi doc hien tai: " << readerList.getSize() << endl;
+        cout << setw(30) << left << "So doc gia hien tai: " << readerList.getSize() << endl;
         cout << setw(30) << left << "So giao dich hien tai: " << transactionList.getSize() << endl;
         cout << setw(30) << left << "So tac gia hien tai: " << authorList.getSize() << endl;
         cout << setw(30) << left << "So the loai hien tai: " << categoryList.getSize() << endl;
+    }
+
+    void sortBookByID() {
+        bookList.sort(increasingID);
+    }
+    void sortBookByName() {
+        bookList.sort(increasingName);
+    }
+    void sortBookByCountBorrow() {
+        bookList.sort(increasingCountBorrow);
+    }
+    void sortBookByAvaiableCopies() {
+        bookList.sort(increasingAvaiableCopies);
+    }
+    void sortBookByTotalCopies() {
+        bookList.sort(increasingTotalCopies);
+    }
+
+    void sortCategoryByID() {
+        categoryList.sort(increasingID);
+    }
+    void sortCategoryByName() {
+        categoryList.sort(increasingName);
+    }
+    void sortCategoryByBookCount() {
+        categoryList.sort(increasingBookCount);
+    }
+
+    void sortAuthorByID() {
+        authorList.sort(increasingID);
+    }
+    void sortAuthorByName() {
+        authorList.sort(increasingName);
+    }
+    void sortAuthorByBookCount() {
+        authorList.sort(increasingBookCount);
+    }
+
+    void sortReaderByID() {
+        readerList.sort(increasingID);
+    }
+    void sortReaderByName() {
+        readerList.sort(increasingName);
+    }
+    void sortReaderByBookCount() {
+        readerList.sort(increasingBookCount);
     }
 };
 
@@ -127,6 +179,7 @@ void Library::loadTransaction() {
         if (statusstr == "1") {
             newTransaction->setStatus(1);
             newTransaction->setReturnDate(returnDatestr);
+            findBookbyID(bookID)->increasingCountBorrow();
         }
         else {
             findReaderbyID(readerID)->borrowBook();
@@ -241,6 +294,88 @@ void Library::loadReaders() {
     file.close();
 }
 
+void Library::writeCategorys() {
+    ofstream file("categorys.txt");
+    if (!file.is_open()) {
+        cout << "Khong the mo file categorys.txt" << endl;
+        return;
+    }
+
+    Node* current = categoryList.getHead();
+    while (current != nullptr) {
+        Category* categoryPtr = dynamic_cast<Category*> (current->data);
+        file << *categoryPtr << endl;
+        current = current->next;
+    }
+
+    file.close();
+}
+
+void Library::writeAuthors() {
+    ofstream file("authors.txt");
+    if (!file.is_open()) {
+        cout << "Khong the mo file authors.txt" << endl;
+        return;
+    }
+
+    Node* current = authorList.getHead();
+    while (current != nullptr) {
+        Author* authorPtr = dynamic_cast<Author*> (current->data);
+        file << *authorPtr << endl;
+        current = current->next;
+    }
+
+    file.close();
+}
+void Library::writeBooks() {
+    ofstream file("books.txt");
+    if (!file.is_open()) {
+        cout << "Khong the mo file books.txt" << endl;
+        return;
+    }
+
+    Node* current = bookList.getHead();
+    while (current != nullptr) {
+        Book* bookPtr = dynamic_cast<Book*> (current->data);
+        file << *bookPtr << endl;
+        current = current->next;
+    }
+
+    file.close();
+}
+void Library::writeReaders() {
+    ofstream file("readers.txt");
+    if (!file.is_open()) {
+        cout << "Khong the mo file readers.txt" << endl;
+        return;
+    }
+
+    Node* current = readerList.getHead();
+    while (current != nullptr) {
+        Reader* readerPtr = dynamic_cast<Reader*> (current->data);
+        file << *readerPtr << endl;
+        current = current->next;
+    }
+
+    file.close();
+}
+
+void Library::writeTransaction() {
+    ofstream file("transactions.txt");
+    if (!file.is_open()) {
+        cout << "Khong the mo file transactions.txt" << endl;
+        return;
+    }
+
+    Node* current = transactionList.getHead();
+    while (current != nullptr) {
+        Transaction* transactionPtr = dynamic_cast<Transaction*> (current->data);
+        file << *transactionPtr << endl;
+        current = current->next;
+    }
+
+    file.close();
+}
 void Library::addCategoryAtHead(Category* newCategory) {
     categoryList.addAtFirst(newCategory);
 }

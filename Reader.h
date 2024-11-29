@@ -22,11 +22,11 @@ public:
     }
     Reader() {}
     Reader(string ReaderID,string Name, bool Gender, string ClassName, string Address, string PhoneNumber)
-    : Person(ReaderID, Name, Gender), className(ClassName), address(Address), phoneNumber(PhoneNumber) {
+    : Person(ReaderID, Name, Gender), className(convertUpper(ClassName)), address(convertUpper(Address)), phoneNumber(PhoneNumber) {
         if (countReader <= toInt(ReaderID, 1)) countReader = toInt(ReaderID, 1) + 1;
     }
     Reader(string Name, bool Gender, string ClassName, string Address, string PhoneNumber)
-    : Person(generateID(), Name, Gender), className(ClassName), address(Address), phoneNumber(PhoneNumber) {}
+    : Person(generateID(), Name, Gender), className(convertUpper(ClassName)), address(convertUpper(Address)), phoneNumber(PhoneNumber) {}
     string getClassName() const {return className;}
     string getAddress() const {return address;}
     string getPhoneNumber() const {return phoneNumber;}
@@ -64,6 +64,14 @@ public:
     }
     void setPhoneNumber(const string& newPhoneNumber) {
         phoneNumber = newPhoneNumber;
+    }
+    friend std::ostream& operator<<(ostream& out, const Reader& reader) {
+        out << reader.id << ',' << reader.name <<  ',' 
+            << reader.gender << ','
+            << reader.className << ','
+            << reader.address << ','
+            << reader.phoneNumber;
+        return out;
     }
 };
 

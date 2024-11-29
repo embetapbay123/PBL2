@@ -1,20 +1,18 @@
-#include <iostream>
-#include "Element.h"
-#include "Book.h"
-#include "Reader.h"
-#include "Transaction.h"
-#include "LM.h"
-// #include <windows.h>
-// #include <iomanip>
-#include "dohoa.h"
+#include <iostream>    
+#include <Windows.h>
 
-int main() {
-    // Box drawing characters
-    std::cout << "┌────────────────────────────┐" << std::endl;  // Top border
-    std::cout << "│111111111111111111111│" << std::endl;  // Content line
-    std::cout << "│ cho beo kkkkkk      │" << std::endl;  // Content line
-    std::cout << "│ cho beo kkkkkk      │" << std::endl;  // Content line
-    std::cout << "└────────────────────────────┘" << std::endl;  // Bottom border
+using namespace std;
 
-    return 0;
+int main()
+{
+    static CONSOLE_FONT_INFOEX  fontex;
+    fontex.cbSize = sizeof(CONSOLE_FONT_INFOEX);
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    GetCurrentConsoleFontEx(hOut, 0, &fontex);
+    fontex.FontWeight = 700;
+    fontex.dwFontSize.X = 36;
+    fontex.dwFontSize.Y = 36;
+    SetCurrentConsoleFontEx(hOut, FALSE, &fontex);
+    cout << "This text is bold, like me.\n";
+  return 0;
 }

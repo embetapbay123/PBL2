@@ -6,7 +6,101 @@
 #include "LM.h"
 #include "dohoa.h"
 using namespace std;
+int displaySortBook() {
+    string menu[] = {
+        "1.ID",
+        "2.Tieu de",
+        "3.Tong so sach",
+        "4.So sach hien co",
+        "5.So lan duoc muon",
+        "6.Quay ve"
+    };
+    return printMenu(menu, 6, "SORT BOOK MENU");
+}
 
+int displaySortReader() {
+    string menu[] = {
+        "1.ID",
+        "2.Ten",
+        "3.So sach dang muon",
+        "4.Quay ve"
+    };
+    return printMenu(menu, 4, "SORT READER MENU");
+}
+
+int displaySortAuthor() {
+    string menu[] = {
+        "1.ID",
+        "2.Ten",
+        "3.So sach dang co",
+        "4.Quay ve"
+    };
+    return printMenu(menu, 4, "SORT AUTHOR MENU");
+}
+
+int displaySortCategory() {
+    string menu[] = {
+        "1.ID",
+        "2.Ten",
+        "3.So sach dang co",
+        "4.Quay ve"
+    };
+    return printMenu(menu, 4, "SORT CATEGORY MENU");
+}
+
+int displayFixBook() {
+    string menu[] = {
+        "1.Tieu de",
+        "2.Tac gia",
+        "3.The loai",
+        "4.Nam",
+        "5.Trang",
+        "6.Tong so sach",
+        "7.Quay ve" 
+    };
+    return printMenu(menu, 7, "FIX BOOK MENU");
+}
+
+int displayFixReader() {
+    string menu[] = {
+        "1.Ten",
+        "2.Gioi tinh",
+        "3.Lop",
+        "4.Dia chi",
+        "5.SDT",
+        "6.Quay ve"
+    };
+    return printMenu(menu, 6, "FIX READER MENU");
+}
+
+int displayFixAuthor() {
+    string menu[] = {
+        "1.Ten",
+        "2.Gioi tinh",
+        "3.Nam sinh",
+        "4.Quay ve"
+    };
+    return printMenu(menu, 4, "FIX AUTHOR MENU");
+}
+
+int displayFixCategory() {
+    string menu[] = {
+        "1.Ten",
+        "2.Quay ve"
+    };
+    return printMenu(menu, 2, "FIX CATEGORY MENU");
+}
+
+int displayMenuFix() {
+    string menu[] = {
+        "1.Sach",
+        "2.Doc gia",
+        "3.Tac gia",
+        "4.The loai",
+        "5.Quay ve"
+    };
+    return printMenu(menu, 5, "FIX MENU");
+}
 int displayAddMenu() {
     string menu[] = {
         "1. Them vao dau",
@@ -24,9 +118,10 @@ int displayMainMenu() {
         "4. Quan ly Tac gia", 
         "5. Quan ly The loai", 
         "6. Thong ke",
-        "7. Thoat"
+        "7. Chinh sua",
+        "8. Thoat"
     };
-    return printMenu(menuu, 7, "QUAN LY THU VIEN");
+    return printMenu(menuu, 8, "QUAN LY THU VIEN");
     return 0;
 }
 int displayCategoryMenu() {
@@ -35,10 +130,11 @@ int displayCategoryMenu() {
         "2. Tim kiem the loai", 
         "3. Tra cuu the loai", 
         "4. Them moi the loai", 
-        "5. Xoa the loai", 
-        "6. Quay lai menu chinh"
+        "5. Xoa the loai",
+        "6. Sap xep", 
+        "7. Quay lai menu chinh"
     };
-    return printMenu(menu, 6, "QUAN LY THE LOAI");
+    return printMenu(menu, 7, "QUAN LY THE LOAI");
 }
 
 int displayAuthorMenu() {
@@ -48,9 +144,10 @@ int displayAuthorMenu() {
         "3. Tra cuu tac gia", 
         "4. Them moi tac gia", 
         "5. Xoa tac gia", 
-        "6. Quay lai menu chinh"
+        "6. Sap xep",
+        "7. Quay lai menu chinh"
     };
-    return printMenu(menu, 6, "QUAN LY TAC GIA");
+    return printMenu(menu, 7, "QUAN LY TAC GIA");
 }
 
 int displayBookMenu() {
@@ -60,9 +157,10 @@ int displayBookMenu() {
         "3. Tra cuu sach", 
         "4. Them moi sach", 
         "5. Xoa sach", 
-        "6. Quay lai menu chinh"
+        "6. Sap xep",
+        "7. Quay lai menu chinh"
     };
-    return printMenu(menu, 6, "QUAN LY SACH");
+    return printMenu(menu, 7, "QUAN LY SACH");
 }
 
 int displayReaderMenu() {
@@ -71,10 +169,11 @@ int displayReaderMenu() {
         "2. Tim kiem doc gia", 
         "3. Tra cuu doc gia", 
         "4. Them moi doc gia", 
-        "5. Xoa doc gia", 
-        "6. Quay lai menu chinh"
+        "5. Xoa doc gia",
+        "6. Sap xep", 
+        "7. Quay lai menu chinh"
     };
-    return printMenu(menu, 6, "QUAN LY DOC GIA");
+    return printMenu(menu, 7, "QUAN LY DOC GIA");
 }
 
 int displayTransactionMenu() {
@@ -83,17 +182,346 @@ int displayTransactionMenu() {
         "2. Tra sach", 
         "3. Danh sach giao dich", 
         "4. Giao dich qua han",
-        "5. Giao dich trong thang", 
+        "5. Giao dich gan day", 
         "6. Quay lai menu chinh"
     };
     return printMenu(menu, 6, "QUAN LY GIAO DICH");
+}
+// Xu ly
+void fixBook(Library& library, Book* needFixBook) {
+    printNoti();
+    int choice;
+    do
+    {
+        choice = displayFixBook() + 1;
+        system("cls");
+        switch (choice) {
+            case 1: {
+                string newName;
+                cout << "Nhap tieu de moi: ";
+                getline(cin, newName);
+                needFixBook->setName(newName);
+                cout << "Chinh sua thanh cong" << endl;
+                break;
+            }
+            case 2: {
+                string newAuthorID;
+                cout << "Nhap ID tac gia moi: ";
+                getline(cin, newAuthorID);
+                Author* newAuthorPtr = library.findAuthorbyID(newAuthorID);
+                if (newAuthorPtr == nullptr) {
+                    cout << "Khong ton tai tac gia co ID " << newAuthorID << endl;
+                    break;
+                }
+                needFixBook->setAuthorPtr(newAuthorPtr);
+                cout << "Chinh sua thanh cong" << endl;
+                break;
+            }
+            case 3: {
+                string newCategoryID;
+                cout << "Nhap ID the loai moi: ";
+                getline(cin, newCategoryID);
+                Category* newCategoryPtr = library.findCategorybyID(newCategoryID);
+                if (newCategoryPtr == nullptr) {
+                    cout << "Khong ton tai the loai co ID " << newCategoryID << endl;
+                    break;
+                }
+                needFixBook->setCategory(newCategoryPtr);
+                cout << "Chinh sua thanh cong" << endl;
+                break;
+            }
+            case 4: {
+                string newYearStr;
+                int newYear;
+                cout << "Nhap nam xuat ban moi: ";
+                getline(cin, newYearStr);
+                newYear = toInt(newYearStr);
+                if (newYear < 0) {
+                    cout << "Nam xuat ban khong hop le" << endl;
+                    break;
+                }
+                needFixBook->setYear(newYear);
+                cout << "Chinh sua thanh cong" << endl;
+                break;
+            }
+            case 5: {
+                string newPagesStr;
+                int newPages;
+                cout << "Nhap so trang moi: ";
+                getline(cin, newPagesStr);
+                newPages = toInt(newPagesStr);
+                if (newPages <= 0) {
+                    cout << "So trang khong hop le" << endl;
+                    break;
+                }
+                needFixBook->setPages(newPages);
+                cout << "Chinh sua thanh cong" << endl;
+                break;
+            }
+            case 6: {
+                string newTotalCopiesStr;
+                int newTotalCopies;
+                cout << "Nhap tong so sach moi: ";
+                getline(cin, newTotalCopiesStr);
+                newTotalCopies = toInt(newTotalCopiesStr);
+                int diff = needFixBook->getTotalCopies() - newTotalCopies;
+                if (diff > needFixBook->getAvailableCopies() || newTotalCopies <= 0) {
+                    cout << "Tong so sach khong hop le" << endl;
+                }
+                needFixBook->setTotalCopies(needFixBook->getTotalCopies() - diff);
+                cout << "Chinh sua thanh cong" << endl;
+                break;
+            }
+            case 7: 
+                return;
+            default:
+                cout << "Lua chon khong hop le" << endl;
+        }
+        printNoti();
+    } while (choice != 7);
+}
+
+void fixReader(Library& library, Reader* needFixReader) {
+    printNoti();
+    int choice;
+    do
+    {
+        choice = displayFixReader() + 1;
+        system("cls");
+        switch (choice) {
+            case 1: {
+                string newName;
+                cout << "Nhap ten: ";
+                getline(cin, newName);
+                needFixReader->setName(newName);
+                cout << "Chinh sua thanh cong" << endl;
+                break;
+            }
+            case 2: {
+                string genderStr;
+                int gender;
+                cout << "Nhap gioi tinh (0: Nu, 1: Nam): ";
+                getline(cin, genderStr);
+                gender = toInt(genderStr);
+                if (gender < 0 || gender > 1) {
+                    cout << "Gioi tinh khong hop le!" << endl;
+                    break;
+                }
+                needFixReader->setGender(gender);
+                cout << "Chinh sua thanh cong" << endl;
+                break;
+            }
+            case 3: {
+                string className;
+                cout << "Nhap lop: ";
+                getline(cin, className);
+                needFixReader->setClassName(className);
+                cout << "Chinh sua thanh cong" << endl;
+                break;
+            }
+            case 4: {
+                string address;
+                cout << "Nhap dia chi: ";
+                getline(cin, address);
+                needFixReader->setAddress(address);
+                cout << "Chinh sua thanh cong" << endl;
+                break;
+            }
+            case 5: {
+                string phone;
+                cout << "Nhap so dien thoai: ";
+                getline(cin, phone);
+                needFixReader->setPhoneNumber(phone);
+                cout << "Chinh sua thanh cong" << endl;
+                break;
+            }
+            case 6: {
+                return;
+            }
+            default:
+                cout << "Lua chon khong hop le" << endl;
+        }
+        printNoti();
+    } while (choice != 6);
+}
+
+void fixAuthor(Library& library, Author* needFixAuthor) {
+    printNoti();
+    int choice;
+    do
+    {
+        choice = displayFixAuthor() + 1;
+        system("cls");
+        switch (choice) {
+            case 1: {
+                string newName;
+                cout << "Nhap ten: ";
+                getline(cin, newName);
+                needFixAuthor->setName(newName);
+                cout << "Chinh sua thanh cong" << endl;
+                break;
+            }
+            case 2: {
+                string genderStr;
+                int gender;
+                cout << "Nhap gioi tinh (0: Nu, 1: Nam): ";
+                getline(cin, genderStr);
+                gender = toInt(genderStr);
+                if (gender < 0 || gender > 1) {
+                    cout << "Gioi tinh khong hop le!" << endl;
+                    break;
+                }
+                needFixAuthor->setGender(gender);
+                cout << "Chinh sua thanh cong" << endl;
+                break;
+            }
+            case 3: {
+                string bornYearStr;
+                int bornYear;
+                cout << "Nhap nam sinh: ";
+                getline(cin, bornYearStr);
+                bornYear = toInt(bornYearStr);
+                if (bornYear < 0) {
+                    cout << "Nam sinh khong hop le!" << endl;
+                    break;
+                }
+                needFixAuthor->setBornYear(bornYear);
+                cout << "Chinh sua thanh cong" << endl;
+                break;
+            }
+            case 4: {
+                return;
+            }
+            default:
+                cout << "Lua chon khong hop le" << endl;
+        }
+        printNoti();
+    } while (choice != 4);
+}
+
+void fixCategory(Library& library, Category* needFixCategory) {
+    printNoti();
+    int choice;
+    do
+    {
+        choice = displayFixCategory() + 1;
+        system("cls");
+        switch (choice) {
+            case 1: {
+                string newName;
+                cout << "Nhap ten: ";
+                getline(cin, newName);
+                needFixCategory->setName(newName);
+                cout << "Chinh sua thanh cong" << endl;
+                break;
+            }
+            case 2: {
+                return;
+            }
+            default:
+                cout << "Lua chon khong hop le" << endl;
+        }
+        printNoti();
+    } while (choice != 2);
+}
+
+void manageFix(Library& library) {
+    int choice;
+    do
+    {
+        choice = displayMenuFix() + 1;
+        system("cls");
+        switch (choice) {
+            case 1: {
+                string bookID;
+                cout << "Nhap ID cua sach can sua: ";
+                getline(cin, bookID);
+                Book* book = library.findBookbyID(bookID);
+                if (book == nullptr) {
+                    cout << "Khong ton tai sach co ID " << bookID << endl;
+                    break;
+                }
+                fixBook(library, book);
+                break;
+            }
+            case 2: {
+                string readerID;
+                cout << "Nhap ID cua doc gia can sua: ";
+                getline(cin, readerID);
+                Reader* reader = library.findReaderbyID(readerID);
+                if (reader == nullptr) {
+                    cout << "Khong ton tai doc gia co ID " << readerID << endl;
+                    break;
+                }
+                fixReader(library, reader);
+                break;
+            }
+            case 3: {
+                string authorID;
+                cout << "Nhap ID cua tac gia can sua: ";
+                getline(cin, authorID);
+                Author* author = library.findAuthorbyID(authorID);
+                if (author == nullptr) {
+                    cout << "Khong ton tai tac gia co ID " << authorID << endl;
+                    break;
+                }
+                fixAuthor(library, author);
+                break;
+            }
+            case 4: {
+                string categoryID;
+                cout << "Nhap ID cua the loai can sua: ";
+                getline(cin, categoryID);
+                Category* category = library.findCategorybyID(categoryID);
+                if (category == nullptr) {
+                    cout << "Khong ton tai the loai co ID " << categoryID << endl;
+                    break;
+                }
+                fixCategory(library, category);
+                break;
+            }
+            case 5: 
+                return;
+            default : 
+                cout << "Lua chon khong hop le" << endl;
+        }
+        printNoti();
+    } while (choice != 5);
+}
+
+void sortCategory(Library& library) {
+    int sortChoice;
+    do
+    {
+        sortChoice = displaySortCategory() + 1;
+        switch (sortChoice) {
+            case 1:
+                library.sortCategoryByID();
+                break;
+            case 2:
+                library.sortCategoryByName();
+                break;
+            case 3: {
+                library.sortCategoryByBookCount();
+                break;
+            }
+            case 4:
+                return;
+            default:
+                cout << "Lua chon khong hop le." << endl;
+        }
+        printNoti();   
+    } while (sortChoice != 4);
+    
 }
 void addNewCategory(Library& library) {
     string name;
     cout << "Nhap ten the loai: ";
     getline(cin, name);
     Category* newCategory = new Category(name);
+    printNoti();
     int addChoice = displayAddMenu() + 1;
+    system("cls");
     switch (addChoice) {
         case 1:
             library.addCategoryAtHead(newCategory);
@@ -105,6 +533,7 @@ void addNewCategory(Library& library) {
             int index;
             cout << "Nhap chi so de them the loai: ";
             cin >> index;
+            cin.ignore();
             library.addCategoryAtIndex(index, newCategory);
             break;
         }
@@ -131,7 +560,7 @@ void manageCategorys(Library& library) {
             case 3: {
                 string CategoryID;
                 cout << "Nhap ID the loai: ";
-                cin >> CategoryID;
+                getline(cin, CategoryID);
                 library.infoCategorybyID(CategoryID);
                 break;
             }
@@ -142,31 +571,74 @@ void manageCategorys(Library& library) {
             case 5: {
                 string CategoryID;
                 cout << "Nhap ID the loai: ";
-                cin >> CategoryID;
+                getline(cin, CategoryID);
                 library.deleteCategory(CategoryID);
                 break;
             }
             case 6:
+                sortCategory(library);
                 break;
+            case 7:
+                return;
             default:
                 cout << "Lua chon khong hop le." << endl;
         }
-        printNoti();
+        if (categoryChoice != 6) printNoti();
         system("cls");
-    } while (categoryChoice != 6);
+    } while (categoryChoice != 7);
+}
+
+void sortAuthor(Library& library) {
+    int sortChoice;
+    do
+    {
+        sortChoice = displaySortAuthor() + 1;
+        switch (sortChoice) {
+            case 1:
+                library.sortAuthorByID();
+                break;
+            case 2:
+                library.sortAuthorByName();
+                break;
+            case 3: {
+                library.sortAuthorByBookCount();
+                break;
+            }
+            case 4:
+                return;
+            default:
+                cout << "Lua chon khong hop le." << endl;
+        }    
+    } while (sortChoice != 4);
+    
 }
 void addNewAuthor(Library& library) {
-    string name;
-    bool gender;
+    string name, genderStr, bornYearStr;
+    int gender;
     int bornYear;
     cout << "Nhap ten tac gia: ";
     getline(cin, name);
     cout << "Nhap gioi tinh (0: Nu, 1: Nam): ";
-    cin >> gender;
+    // cin >> gender;
+    getline(cin, genderStr);
+    gender = toInt(genderStr);
+    if (gender < 0 || gender > 1) {
+        cout << "Gioi tinh khong hop le!" << endl;
+        return;
+    }
     cout << "Nhap nam sinh: ";
-    cin >> bornYear;
+    // cin >> bornYear;
+    getline(cin, bornYearStr);
+    bornYear = toInt(bornYearStr);
+    if (bornYear < 0) {
+        cout << "Nam sinh khong hop le!" << endl;
+        return;
+    }
+    // cin.ignore();
     Author* newAuthor = new Author(name, gender, bornYear);
+    printNoti();
     int addChoice = displayAddMenu() + 1;
+    system("cls");
     switch (addChoice) {
         case 1:
             library.addAuthorAtHead(newAuthor);
@@ -178,6 +650,7 @@ void addNewAuthor(Library& library) {
             int index;
             cout << "Nhap chi so de them tac gia: ";
             cin >> index;
+            cin.ignore();
             library.addAuthorAtIndex(index, newAuthor);
             break;
         }
@@ -197,7 +670,6 @@ void manageAuthors(Library& library) {
             case 2: {
                 string name;
                 cout << "Nhap ten tac gia: ";
-                // cin.ignore();
                 getline(cin, name);
                 library.searchAuthorByName(name);
                 break;
@@ -205,7 +677,7 @@ void manageAuthors(Library& library) {
             case 3: {
                 string AuthorID;
                 cout << "Nhap ID tac gia: ";
-                cin >> AuthorID;
+                getline(cin, AuthorID);
                 library.infoAuthorbyID(AuthorID);
                 break;
             }
@@ -216,39 +688,100 @@ void manageAuthors(Library& library) {
             case 5: {
                 string AuthorID;
                 cout << "Nhap ID tac gia: ";
-                cin >> AuthorID;
+                getline(cin, AuthorID);
                 library.deleteAuthor(AuthorID);
                 break;
             }
             case 6:
+                sortAuthor(library);
                 break;
+            case 7:
+                return;
             default:
                 cout << "Lua chon khong hop le." << endl;
         }
-        printNoti();
-    } while (authorChoice != 6);
+        if (authorChoice != 6) printNoti();
+    } while (authorChoice != 7);
 }
 // Chức năng quản lý sách
+void sortBook(Library& library) {
+    int sortChoice;
+    do
+    {
+        sortChoice = displaySortBook() + 1;
+        switch (sortChoice) {
+            case 1:
+                library.sortBookByID();
+                break;
+            case 2:
+                library.sortBookByName();
+                break;
+            case 3: {
+                library.sortBookByTotalCopies();
+                break;
+            }
+            case 4:
+                library.sortBookByAvaiableCopies();
+                break;
+            case 5:
+                library.sortBookByCountBorrow();
+            case 6:
+                return;
+            default:
+                cout << "Lua chon khong hop le." << endl;
+        }   
+        printNoti();
+    } while (sortChoice != 6);
+    
+}
 void addNewBook(Library& library) {
-    string title, authorID, categoryID;
+    string title, authorID, categoryID, yearStr, pagesStr, totalCopiesStr;
     int year, pages, totalCopies;
     cout << "Nhap tieu de sach: ";
     getline(cin, title);
     cout << "Nhap ID tac gia: ";
     getline(cin, authorID);
-    cout << "Nhap ID the loai: ";
-    getline(cin, categoryID);
-    cout << "Nhap nam xuat ban: ";
-    cin >> year;
-    cout << "Nhap so trang: ";
-    cin >> pages;
-    cout << "Nhap tong so ban sao: ";
-    cin >> totalCopies;
-    Book* newBook = library.createNewBook(title, authorID, categoryID, year, pages, totalCopies);
-    if (newBook == nullptr) {
-        cout << "Khong the tao boi vi tac gia hoac the loai khong ton tai!" << endl;
+    if (library.findAuthorbyID(authorID) == nullptr) {
+        cout << "Khong ton tai tac gia co ID " << authorID << endl;
         return;
     }
+    cout << "Nhap ID the loai: ";
+    getline(cin, categoryID);
+    if (library.findCategorybyID(categoryID) == nullptr) {
+        cout << "Khong ton tai the loai co ID " << categoryID << endl;
+        return;
+    }
+    cout << "Nhap nam xuat ban: ";
+    // cin >> year;
+    getline(cin, yearStr);
+    year = toInt(yearStr);
+    if (year < 0) {
+        cout << "Nam xuat ban khong hop le" << endl;
+        return;
+    }
+    cout << "Nhap so trang: ";
+    // cin >> pages;
+    getline(cin, pagesStr);
+    pages = toInt(pagesStr);
+    if (pages <= 0) {
+        cout << "So trang khong hop le" << endl;
+        return;
+    }
+    cout << "Nhap tong so ban sao: ";
+    // cin >> totalCopies;
+    getline(cin, totalCopiesStr);
+    totalCopies = toInt(totalCopiesStr);
+    if (totalCopies <= 0) {
+        cout << "So ban sao khong hop le" << endl;
+        return;
+    }
+    // cin.ignore();
+    Book* newBook = library.createNewBook(title, authorID, categoryID, year, pages, totalCopies);
+    if (newBook == nullptr) {
+        cout << "Khong the tao sach!" << endl;
+        return;
+    }
+    printNoti();
     int addChoice = displayAddMenu() + 1;
     system("cls");
     switch (addChoice) {
@@ -262,6 +795,7 @@ void addNewBook(Library& library) {
             int index;
             cout << "Nhap chi so de them sach: ";
             cin >> index;
+            cin.ignore();
             library.addBookAtIndex(index, newBook);
             break;
         }
@@ -281,7 +815,7 @@ void manageBooks(Library& library) {
             case 2: {
                 string title;
                 cout << "Nhap ten sach: ";
-                // cin.ignore();
+                cin.ignore();
                 getline(cin, title);
                 library.searchBookByTitle(title);
                 break;
@@ -289,7 +823,7 @@ void manageBooks(Library& library) {
             case 3: {
                 string bookID;
                 cout << "Nhap ID sach: ";
-                cin >> bookID;
+                getline(cin, bookID);
                 library.infoBookbyID(bookID);
                 break;
             }
@@ -306,22 +840,54 @@ void manageBooks(Library& library) {
                 break;
             }
             case 6:
+                sortBook(library);
                 break;
+            case 7:
+                return;
             default:
                 cout << "Lua chon khong hop le." << endl;
         }
-        printNoti();
-    } while (bookChoice != 6);
+        if (bookChoice != 6) printNoti();
+    } while (bookChoice != 7);
 }
 // Chức năng quản lý độc giả
+void sortReader(Library& library) {
+    int sortChoice;
+    do
+    {
+        sortChoice = displaySortReader() + 1;
+        switch (sortChoice) {
+            case 1:
+                library.sortReaderByID();
+                break;
+            case 2:
+                library.sortReaderByName();
+                break;
+            case 3: {
+                library.sortReaderByBookCount();
+                break;
+            }
+            case 4:
+                return;
+            default:
+                cout << "Lua chon khong hop le." << endl;
+        }    
+    } while (sortChoice != 4);
+    
+}
 void addNewReader(Library& library) {
-    string name, className, address, phone;
-    bool gender;
+    string name, className, address, phone, genderStr;
+    int gender;
     cout << "Nhap ten doc gia: ";
-    // cin.ignore();
     getline(cin, name);
     cout << "Nhap gioi tinh (0: Nu, 1: Nam): ";
-    cin >> gender;
+    // cin >> gender;
+    getline(cin, genderStr);
+    gender = toInt(genderStr);
+    if (gender < 0 || gender > 1) {
+        cout << "Gioi tinh khong hop le!" << endl;
+        return;
+    }
     cout << "Nhap lop: ";
     getline(cin, className);
     cout << "Nhap dia chi: ";
@@ -329,7 +895,9 @@ void addNewReader(Library& library) {
     cout << "Nhap so dien thoai: ";
     getline(cin, phone);
     Reader* newReader = new Reader(name, gender, className, address, phone);
+    printNoti();
     int addChoice = displayAddMenu() + 1;
+    system("cls");
     switch (addChoice) {
         case 1:
             library.addReaderAtHead(newReader);
@@ -341,6 +909,7 @@ void addNewReader(Library& library) {
             int index;
             cout << "Nhap chi so de them doc gia: ";
             cin >> index;
+            cin.ignore();
             library.addReaderAtIndex(index, newReader);
             break;
         }
@@ -367,7 +936,7 @@ void manageReaders(Library& library) {
             case 3: {
                 string readerID;
                 cout << "Nhap ID doc gia: ";
-                cin >> readerID;
+                getline(cin, readerID);
                 library.infoReaderbyID(readerID);
                 break;
             }
@@ -378,17 +947,20 @@ void manageReaders(Library& library) {
             case 5: {
                 string readerID;
                 cout << "Nhap ID doc gia: ";
-                cin >> readerID;
+                getline(cin, readerID);
                 library.deleteReader(readerID);
                 break;
             }
             case 6:
+                sortReader(library);
                 break;
+            case 7:
+                return;
             default:
                 cout << "Lua chon khong hop le." << endl;
         }
-        printNoti();
-    } while (readerChoice != 6);
+        if(readerChoice != 6) printNoti();
+    } while (readerChoice != 7);
 }
 // Chức năng quản lý giao dịch
 void manageTransactions(Library& library) {
@@ -398,21 +970,51 @@ void manageTransactions(Library& library) {
         system("cls");
         switch (transactionChoice) {
             case 1: {
-                string readerID, bookID;
+                string readerID, bookID, numberStr;
+                int number;
                 cout << "Nhap ID doc gia: ";
-                cin >> readerID;
-                cout << "Nhap ID sach: ";
-                cin >> bookID;
-                library.borrowBook(readerID, bookID);
+                getline(cin, readerID);
+                if (library.findReaderbyID(readerID) == nullptr) {
+                    cout << "Khong ton tai doc gia co ID " << readerID << endl;
+                    break;
+                }
+                cout << "Nhap so sach can muon: "; 
+                getline(cin, numberStr);
+                number = toInt(numberStr);
+                while (number > 0) {
+                    cout << "Nhap ID sach: ";
+                    getline(cin, bookID);
+                    if (library.findBookbyID(bookID) == nullptr) {
+                        cout << "Khong ton tai sach co ID " << bookID << endl;
+                        break;
+                    }
+                    library.borrowBook(readerID, bookID);
+                    number--;
+                }
                 break;
             }
             case 2: {
-                string readerID, bookID;
+                string readerID, bookID, numberStr;
+                int number;
                 cout << "Nhap ID doc gia: ";
-                cin >> readerID;
-                cout << "Nhap ID sach: ";
-                cin >> bookID;
-                library.returnBook(readerID, bookID);
+                getline(cin, readerID);
+                if (library.findReaderbyID(readerID) == nullptr) {
+                    cout << "Khong ton tai doc gia co ID " << readerID << endl;
+                    break;
+                }
+                cout << "Nhap so sach can tra: "; 
+                getline(cin, numberStr);
+                number = toInt(numberStr);
+                while (number > 0) {
+                    cout << "Nhap ID sach: ";
+                    getline(cin, bookID);
+                    if (library.findBookbyID(bookID) == nullptr) {
+                        cout << "Khong ton tai sach co ID " << bookID << endl;
+                        break;
+                    }
+                    library.returnBook(readerID, bookID);
+                    number--;
+                }
                 break;
             }
             case 3:
@@ -425,7 +1027,7 @@ void manageTransactions(Library& library) {
                 library.inMonthTransaction();
                 break;
             case 6:
-                break;
+                return;
             default:
                 cout << "Lua chon khong hop le." << endl;
         }
@@ -441,7 +1043,6 @@ int main() {
     library.loadReaders();
     library.loadTransaction();
     int choice = 0;
-
     do {
         choice = displayMainMenu() + 1;
         switch (choice) {
@@ -466,6 +1067,9 @@ int main() {
                 system("pause");
                 break;
             case 7:
+                manageFix(library);
+                break;
+            case 8:
                 cout << "Thoat chuong trinh...\n";
                 break;
             default: {
@@ -473,7 +1077,11 @@ int main() {
                 printNoti();
             }
         }
-    } while (choice != 7);
-
+    } while (choice != 8);
+    library.writeReaders();
+    library.writeBooks();
+    library.writeTransaction();
+    library.writeAuthors();
+    library.writeCategorys();
     return 0;
 }

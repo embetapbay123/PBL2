@@ -44,6 +44,15 @@ char toLower(char ch) {
     }
     return ch;
 }
+string convertUpper(const string& s) {
+    string res = s;
+    for (int i = 0; i < s.size(); i++) {
+        if (s[i] >= 'a' && s[i] <= 'z') {
+            res[i] -= 32;
+        }
+    }
+    return res;
+}
 // Kiem tra sub co phai substr cua str khong?
 bool isSubstring(const string& str, const string& sub) {
     if (sub.length() > str.length()) return false;
@@ -67,7 +76,7 @@ protected :
 public :
 	Element() {}
 	virtual ~Element() {}
-    Element(const string& ID, const string& Name) : id(ID), name(Name) {}
+    Element(const string& ID, const string& Name) : id(ID), name(convertUpper(Name)) {}
 	string getId() const {return id;}
     string getName() const {return name;}
     void setId(const string& newId) {
@@ -81,4 +90,10 @@ public :
 	virtual string generateID() = 0;
     virtual void printInfo() const = 0;  
 };
+bool increasingID(Element*& e1, Element*& e2) {
+    return (e1->getId()) < (e2->getId());
+}
+bool increasingName(Element*& e1, Element*& e2) {
+    return (e1->getName()) < (e2->getName());
+}
 #endif

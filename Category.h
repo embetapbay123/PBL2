@@ -46,6 +46,16 @@ public:
     void decresingBookCount () {
         bookCount--;
     }
+    friend std::ostream& operator<<(ostream& out, const Category &category) {
+        out << category.id << ',' << category.name;
+        return out;
+    }
 };
 int Category::countCategory = 0;
+
+bool increasingBookCount(Element*& e1, Element*& e2) {
+    Category* category1Ptr = dynamic_cast<Category*> (e1);
+    Category* category2Ptr = dynamic_cast<Category*> (e2);
+    return (category1Ptr->getbookCount()) < (category2Ptr->getbookCount());
+}
 #endif

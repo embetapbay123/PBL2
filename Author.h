@@ -43,6 +43,12 @@ public:
     void setBornYear(const int& newBornYear) {
         bornYear = newBornYear;
     }
+    friend std::ostream& operator<<(ostream& out, const Author& author) {
+        out << author.id << ',' << author.name <<  ',' 
+            << author.gender << ','
+            << author.bornYear;
+        return out;
+    }
 };
 
 int Author::countAuthor = 1;

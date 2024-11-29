@@ -61,6 +61,15 @@ public:
          << setw(15) << (status ? "Da tra" : "Chua tra") << endl;
     }
     bool isOverMonth() const;
+    friend std::ostream& operator<<(ostream& out, const Transaction& transaction) {
+        out << transaction.id << ','
+            << transaction.readerID << ','
+            << transaction.bookID << ','
+            << transaction.borrowDate.info() << ','
+            << (transaction.status ? transaction.returnDate.info() : "NULL") << ','
+            << transaction.status;
+        return out;
+    }
 };
 
 // Implementation of Transaction class
