@@ -57,10 +57,10 @@ public:
          << setw(10) << bookCount << endl;
 	}
     void setClassName(const string& newClassName) {
-        className = newClassName;
+        className = convertUpper(newClassName);
     }
     void setAddress(const string& newAddress) {
-        address = newAddress;
+        address = convertUpper(newAddress);
     }
     void setPhoneNumber(const string& newPhoneNumber) {
         phoneNumber = newPhoneNumber;

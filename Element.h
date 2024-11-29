@@ -83,7 +83,7 @@ public :
        	id = newId;
     }
 	void setName(const string& newName) {
-	   	name = newName;
+	   	name = convertUpper(newName);
 	}
     virtual bool isAvailabletoDelete() const {return 0;}
 	virtual void printTable() const = 0; 
