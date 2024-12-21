@@ -8,6 +8,7 @@
 #include "Category.h"
 #include "Person.h"
 #include "LinkList.h"
+#include "user.h"
 #include <fstream>
 using namespace std;
 class Library;
@@ -19,6 +20,7 @@ private:
     LinkedList bookList; // HeadNode cua book
     LinkedList readerList; // HeadNode cua reader
     LinkedList transactionList; // HeadNode cua transaction
+    LinkedList userList;
 public:
     Library(); 
     ~Library(); 
@@ -27,12 +29,14 @@ public:
     void loadBooks(); // Doc du lieu tu file books.txt va them vao linklist cua book
     void loadReaders(); // Doc du lieu tu file readers.txt va them vao linklist cua reader
     void loadTransaction(); // Doc du lieu tu file transactions.txt va them vao linklist cua transaction
-    
+    void loadUsers(); // Doc du lieu tu file users.txt va them vao linklist
+
     void writeCategorys(); 
     void writeAuthors(); 
     void writeBooks(); 
     void writeReaders(); 
     void writeTransaction(); 
+    void writeUsers();
     Book* createNewBook(string title, string authorID, string categoryID, int year, int pages, int totalCopies) {
         Author* authorPtr = findAuthorbyID(authorID);
         Category* categoryPtr = findCategorybyID(categoryID);
@@ -40,6 +44,10 @@ public:
 	    Book* newBook = new Book(title, authorPtr, categoryPtr, year, pages, totalCopies);
 	    return newBook;
 	}
+
+    void addUserAtHead(User* newUser);
+    void addUserAtEnd(User* newUser); 
+	void addUserAtIndex(int index, User* newUser); 
 
     void addCategoryAtHead(Category* newCategory);
     void addCategoryAtEnd(Category* newCategory); 
@@ -148,6 +156,34 @@ public:
     }
     void sortReaderByBookCount() {
         readerList.sort(increasingBookCount);
+    }
+
+    User* login() {
+        string username, password;
+
+        cout << "\n+-----------------+\n";
+        cout << "|    Đăng nhập    |\n";
+        cout << "+-----------------+\n";
+
+        cout << "Tên đăng nhập: ";
+        cin >> username;
+        cout << "Mật khẩu: ";
+        password = User::inputPasswordWithAsterisks();
+
+        Node* current = userList.getHead();
+        while (current != nullptr) {
+            User* userPtr = dynamic_cast<User*> (current->data);
+            if (userPtr->getId() == username) {
+                if (userPtr->authenticate(password)) {
+                    return userPtr;
+                }
+                else {
+                    return nullptr;
+                }
+            }
+            current = current->next;
+        }
+        return nullptr;
     }
 };
 
@@ -294,6 +330,28 @@ void Library::loadReaders() {
     file.close();
 }
 
+void Library::loadUsers() {
+    ifstream file("users.txt");
+    if (!file.is_open()) {
+        cout << "Khong the mo file users.txt" << endl;
+        return;
+    }
+
+    string line;
+    int lineNumber = 0;
+
+    while (getline(file, line)) {
+        lineNumber++;
+        string userID = extractField(line);
+        string pass = extractField(line);
+        string role = extractField(line);
+        User* newUser = new User(userID, pass, role);
+        addUserAtEnd(newUser);
+    }
+
+    file.close();
+}
+
 void Library::writeCategorys() {
     ofstream file("categorys.txt");
     if (!file.is_open()) {
@@ -376,6 +434,36 @@ void Library::writeTransaction() {
 
     file.close();
 }
+
+void Library::writeUsers() {
+    ofstream file("users.txt");
+    if (!file.is_open()) {
+        cout << "Khong the mo file users.txt" << endl;
+        return;
+    }
+
+    Node* current = userList.getHead();
+    while (current != nullptr) {
+        User* userPtr = dynamic_cast<User*> (current->data);
+        file << *userPtr << endl;
+        current = current->next;
+    }
+
+    file.close();
+}
+
+void Library::addUserAtHead(User* newUser) {
+    userList.addAtFirst(newUser);
+}
+
+void Library::addUserAtEnd(User* newUser) {
+    userList.addAtEnd(newUser);
+}
+
+void Library::addUserAtIndex(int index, User* newUser) {
+    userList.addAtIndex(index, newUser);
+}
+
 void Library::addCategoryAtHead(Category* newCategory) {
     categoryList.addAtFirst(newCategory);
 }

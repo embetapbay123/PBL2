@@ -34,7 +34,7 @@ public:
         }
         head = newNode;
         size++;
-        cout << "Them thanh cong!" << endl;
+        // cout << "Them thanh cong!" << endl;
     }
 
     void addAtEnd(Element* item) {
@@ -80,7 +80,7 @@ public:
             newNode->prev = current;  
             size++;
         }
-        cout << "THEM THANH CONG!" << endl;
+        // cout << "Them thanh cong!" << endl;
     }
 
     void clear() {

@@ -24,6 +24,9 @@ void clearScreen() {
 void printNoti() {
     system("pause");
 }
+void printNoAccess() {
+    cout << "Ban khong co quyen truy cap chuc nang nay" << endl;
+}
 
 void setColor(int colorCode) {
     cout << "\033[" << colorCode << "m";

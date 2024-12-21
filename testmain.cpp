@@ -4,7 +4,10 @@
 #include "Reader.h"
 #include "Transaction.h"
 #include "LM.h"
+#include "user.h"
 #include "dohoa.h"
+User* user_login = nullptr;
+bool canAccess = 0;
 using namespace std;
 int displaySortBook() {
     string menu[] = {
@@ -186,6 +189,16 @@ int displayTransactionMenu() {
         "6. Quay lai menu chinh"
     };
     return printMenu(menu, 6, "QUAN LY GIAO DICH");
+}
+//
+int displayUserMenu() {
+    string menu[] = {
+        "1. Doi mat khau", 
+        "2. Menu", 
+        "3. Dang xuat",
+        "4. Ket thuc ngay" 
+    };
+    return printMenu(menu, 4, "USER MENU");
 }
 // Xu ly
 void fixBook(Library& library, Book* needFixBook) {
@@ -565,10 +578,18 @@ void manageCategorys(Library& library) {
                 break;
             }
             case 4: {
+                if (canAccess == 0) {
+                    printNoAccess();
+                    break;
+                }
                 addNewCategory(library);
                 break;
             }
             case 5: {
+                if (canAccess == 0) {
+                    printNoAccess();
+                    break;
+                }
                 string CategoryID;
                 cout << "Nhap ID the loai: ";
                 getline(cin, CategoryID);
@@ -682,10 +703,18 @@ void manageAuthors(Library& library) {
                 break;
             }
             case 4: {
+                if (canAccess == 0) {
+                    printNoAccess();
+                    break;
+                }
                 addNewAuthor(library);
                 break;
             }
             case 5: {
+                if (canAccess == 0) {
+                    printNoAccess();
+                    break;
+                }
                 string AuthorID;
                 cout << "Nhap ID tac gia: ";
                 getline(cin, AuthorID);
@@ -828,10 +857,18 @@ void manageBooks(Library& library) {
                 break;
             }
             case 4: {
+                if (canAccess == 0) {
+                    printNoAccess();
+                    break;
+                }
                 addNewBook(library);
                 break;
             }
             case 5: {
+                if (canAccess == 0) {
+                    printNoAccess();
+                    break;
+                }
                 string bookID;
                 cout << "Nhap ID sach: ";
                 // cin.ignore();
@@ -895,15 +932,18 @@ void addNewReader(Library& library) {
     cout << "Nhap so dien thoai: ";
     getline(cin, phone);
     Reader* newReader = new Reader(name, gender, className, address, phone);
+    User* newUser = new User (*newReader);
     printNoti();
     int addChoice = displayAddMenu() + 1;
     system("cls");
     switch (addChoice) {
         case 1:
             library.addReaderAtHead(newReader);
+            library.addUserAtHead(newUser);
             break;
         case 2:
             library.addReaderAtEnd(newReader);
+            library.addUserAtEnd(newUser);
             break;
         case 3: {
             int index;
@@ -911,6 +951,7 @@ void addNewReader(Library& library) {
             cin >> index;
             cin.ignore();
             library.addReaderAtIndex(index, newReader);
+            library.addUserAtIndex(index, newUser);
             break;
         }
         default:
@@ -941,10 +982,18 @@ void manageReaders(Library& library) {
                 break;
             }
             case 4: {
+                if (canAccess == 0) {
+                    printNoAccess();
+                    break;
+                }
                 addNewReader(library);
                 break;
             }
             case 5: {
+                if (canAccess == 0) {
+                    printNoAccess();
+                    break;
+                }
                 string readerID;
                 cout << "Nhap ID doc gia: ";
                 getline(cin, readerID);
@@ -972,8 +1021,10 @@ void manageTransactions(Library& library) {
             case 1: {
                 string readerID, bookID, numberStr;
                 int number;
-                cout << "Nhap ID doc gia: ";
-                getline(cin, readerID);
+                if (canAccess == 1) {
+                    cout << "Nhap ID doc gia: ";
+                    getline(cin, readerID);
+                } else readerID = user_login->getId();
                 if (library.findReaderbyID(readerID) == nullptr) {
                     cout << "Khong ton tai doc gia co ID " << readerID << endl;
                     break;
@@ -996,8 +1047,10 @@ void manageTransactions(Library& library) {
             case 2: {
                 string readerID, bookID, numberStr;
                 int number;
-                cout << "Nhap ID doc gia: ";
-                getline(cin, readerID);
+                if (canAccess == 1) {
+                    cout << "Nhap ID doc gia: ";
+                    getline(cin, readerID);
+                } else readerID = user_login->getId();
                 if (library.findReaderbyID(readerID) == nullptr) {
                     cout << "Khong ton tai doc gia co ID " << readerID << endl;
                     break;
@@ -1035,13 +1088,7 @@ void manageTransactions(Library& library) {
     } while (transactionChoice != 6);
 }
 
-int main() {
-    Library library;
-    library.loadCategorys();
-    library.loadAuthors();
-    library.loadBooks();
-    library.loadReaders();
-    library.loadTransaction();
+void main_menu(Library& library) {
     int choice = 0;
     do {
         choice = displayMainMenu() + 1;
@@ -1067,10 +1114,18 @@ int main() {
                 system("pause");
                 break;
             case 7:
+                if (canAccess == 0) {
+                    system("cls");
+                    printNoAccess();
+                    system("pause");
+                    break;
+                }
                 manageFix(library);
                 break;
             case 8:
-                cout << "Thoat chuong trinh...\n";
+                system("cls");
+                cout << "Quay lai...\n";
+                printNoti();
                 break;
             default: {
                 cout << "Lua chon khong hop le." << endl;
@@ -1078,6 +1133,67 @@ int main() {
             }
         }
     } while (choice != 8);
+}
+
+int main() {
+    Library library;
+    library.loadUsers();
+    library.loadCategorys();
+    library.loadAuthors();
+    library.loadBooks();
+    library.loadReaders();
+    library.loadTransaction();
+    system("pause");
+    do {
+        system("cls");
+        do {
+            user_login = library.login();
+            system("cls");
+            if (user_login == nullptr) {
+                drawBox("Login failed", 0);
+            } else drawBox("Login successful", 0);
+            system("pause");
+            system("cls");
+        } while (user_login == nullptr);
+        cin.ignore();
+        if (user_login->getName() == "ADMIN") canAccess = 1;
+        else canAccess = 0;
+
+        int choice = 0;
+        do {
+            choice = displayUserMenu() + 1;
+            system("cls");
+            switch (choice) {
+                case 1:
+                    user_login->changePassword();
+                    break;
+                case 2:
+                    main_menu(library);
+                    break;
+                case 3:
+                    user_login = nullptr;
+                    break;
+                case 4:
+                    if (canAccess == 0) {
+                        printNoAccess();
+                        choice = 0;
+                    }
+                    else cout << "Thoat...\n";
+                    break;
+                default: {
+                    cout << "Lua chon khong hop le." << endl;
+                    printNoti();
+                }
+            }
+            if (choice != 2) {
+                printNoti();
+            }
+        } while (choice != 4 && choice != 3);
+        if (choice == 4) {
+            break;
+        }
+    } while(true);
+    
     library.writeReaders();
     library.writeBooks();
     library.writeTransaction();
